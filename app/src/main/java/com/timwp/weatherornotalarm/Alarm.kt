@@ -8,7 +8,12 @@ import android.content.Intent
 import android.media.Ringtone
 import java.util.*
 
-class Alarm(settings: IAlarmSettings, con: Context) {
+class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
+    override fun compareTo(other: Alarm): Int {
+        return (if (alarmTime > other.getAlarmTime()) 1 else -1)
+    }
+
+    private val localAlarmManager = LocalAlarmManager.getInstance(con)
     private var context = con
     private var alarmTime = settings.time
     private var loc = settings.location
@@ -20,10 +25,19 @@ class Alarm(settings: IAlarmSettings, con: Context) {
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
     lateinit var pendingAlarmIntent: PendingIntent
 
+    fun getID(): Int {
+        return alarmID
+    }
+
+    fun getAlarmTime(): Long {
+        return alarmTime
+    }
+
     fun set() {
         alarmIntent.action = "com.timwp.alarmtrigger"
         pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingAlarmIntent)
+        localAlarmManager.addAlarm(this)
     }
     fun edit(settings: IAlarmSettings, con: Context) {
         cancel()
