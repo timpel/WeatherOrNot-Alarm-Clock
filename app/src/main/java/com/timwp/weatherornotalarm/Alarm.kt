@@ -8,35 +8,33 @@ import android.content.Intent
 import android.media.Ringtone
 import java.util.*
 
-/**
- * Created by tim on 04/03/18.
- */
-class Alarm(con: Context, time: Date, location: String, criteria: WeatherCriteria, keepChecking: Boolean, snoozeTime: Int) {
+class Alarm(settings: IAlarmSettings, con: Context) {
     private var context = con
-    private var alarmTime = time
-    private var loc = location
+    private var alarmTime = settings.time
+    private var loc = settings.location
     private var ringing = false
-    private var checkAgain = keepChecking
-    private var snooze = snoozeTime
+    private var checkAgain = settings.keepChecking === "true"
+    private var snooze = settings.snoozeTime
+    private val alarmID = (Calendar.getInstance().timeInMillis).toInt()
+    private val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    private val alarmIntent = Intent(context, AlarmReceiver::class.java)
+    lateinit var pendingAlarmIntent: PendingIntent
 
     fun set() {
-        val TEST_ALARM_TIME = Calendar.getInstance().timeInMillis + 15000
-        val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(context, AlarmReceiver::class.java)
         alarmIntent.action = "com.timwp.alarmtrigger"
-        val pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, TEST_ALARM_TIME, pendingAlarmIntent)
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingAlarmIntent)
     }
-    fun edit(context: Context, time: Date, location: String, criteria: WeatherCriteria, keepChecking: Boolean, snoozeTime: Int) {
+    fun edit(settings: IAlarmSettings, con: Context) {
         cancel()
-        alarmTime = time
-        loc = location
-        checkAgain = keepChecking
-        snooze = snoozeTime
+        alarmTime = settings.time
+        loc = settings.location
+        checkAgain = settings.keepChecking === "true"
+        snooze = settings.snoozeTime
         set()
     }
     fun cancel() {
-
+        systemAlarmManager.cancel(pendingAlarmIntent)
     }
     fun trigger() {
         if (matchesWeatherCriteria()) ring()
@@ -59,7 +57,7 @@ class Alarm(con: Context, time: Date, location: String, criteria: WeatherCriteri
     fun matchesWeatherCriteria(): Boolean {
         return false
     }
-    fun addSnoozeTime(): Date {
-        return alarmTime
+    fun addSnoozeTime(): Long {
+        return alarmTime + (if (snooze === "Off") 0 else (snooze.get(0).toInt() * 60000))
     }
 }
