@@ -10,6 +10,7 @@ import android.widget.Spinner
 import kotlinx.android.synthetic.main.activity_set_alarm.*
 import java.time.Instant
 import java.util.*
+import kotlin.math.abs
 
 class SetAlarmActivity : AppCompatActivity() {
 
@@ -79,23 +80,24 @@ class SetAlarmActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, timepicker.minute)
         val repeatDays = arrayOf("Never") // TODO: use real info
 
-        val weatherCriteria: IWeatherCriteria = object: IWeatherCriteria {
-            override val conditions: String = conditionSpinner.selectedItem as String
-            override val temp: String = tempNumSpinner.selectedItem as String
-            override val tempOperator: String = tempOpSpinner.selectedItem as String
-            override val windOperator: String = windOpSpinner.selectedItem as String
-            override val windSpeed: String = windSpeedSpinner.selectedItem as String
-            override val windDirection: String = windDirSpinner.selectedItem as String
-            override val fog: String = fogSpinner.selectedItem as String
-        }
-        val alarmSettings: IAlarmSettings = object: IAlarmSettings {
-            override val time: Long = calendar.timeInMillis
-            override val location: String = "Vancouver, BC" // TODO: use real info
-            override val criteria: IWeatherCriteria = weatherCriteria
-            override val keepChecking: String = "false"
-            override val repeat: Array<String> = repeatDays
-            override val snoozeTime: String = snoozeSpinner.selectedItem as String
-        }
+        val weatherCriteria = IWeatherCriteria (
+            conditionSpinner.selectedItem as String,
+            tempNumSpinner.selectedItem as String,
+            tempOpSpinner.selectedItem as String,
+            windOpSpinner.selectedItem as String,
+            windSpeedSpinner.selectedItem as String,
+            windDirSpinner.selectedItem as String,
+            fogSpinner.selectedItem as String
+        )
+        val alarmSettings = IAlarmSettings (
+            abs((Calendar.getInstance().timeInMillis).toInt()),
+            calendar.timeInMillis,
+            "Vancouver, BC", // TODO: use real info
+            weatherCriteria,
+            "false",
+            snoozeSpinner.selectedItem as String,
+            repeatDays
+        )
 
         val alarm = Alarm(alarmSettings, this)
         alarm.set()

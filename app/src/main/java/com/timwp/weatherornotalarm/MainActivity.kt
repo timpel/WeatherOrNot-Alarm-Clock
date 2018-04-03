@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.AppCompatImageButton
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import java.util.*
@@ -29,26 +31,39 @@ class MainActivity : AppCompatActivity() {
         Log.e("Logging", "in addAlarm")
     }
 
-    private class AlarmListAdapter(context: Context): BaseAdapter() {
+    private class AlarmListAdapter(val mContext: Context): BaseAdapter() {
 
-        private val mContext: Context = context
         private val localAlarmManager = LocalAlarmManager.getInstance(mContext)
 
         override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
-            val thisAlarm: Alarm = localAlarmManager.getAlarmByPosition(position)
+            val rowMain: View
             val layoutInflater : LayoutInflater = LayoutInflater.from(mContext)
-            val rowMain = layoutInflater.inflate(R.layout.alarm_item, viewGroup, false)
-            val positionAlarmTime = rowMain.findViewById<TextView>(R.id.alarm_time)
-            positionAlarmTime.text = alarmString(thisAlarm.getAlarmTime())
+            rowMain = layoutInflater.inflate(R.layout.alarm_item, viewGroup, false)
+            val thisAlarm: Alarm = localAlarmManager.getAlarmByPosition(position)
+            val alarmTime = rowMain.findViewById<TextView>(R.id.alarm_time)
+            val cancelButton = rowMain.findViewById<AppCompatImageButton>(R.id.cancel_button)
+            val viewHolder = ViewHolder(thisAlarm, alarmTime, cancelButton)
+            rowMain.tag = viewHolder
+            viewHolder.alarmTime.text = alarmString(viewHolder.thisAlarm.getAlarmTime())
+            viewHolder.cancelButton.setOnClickListener(object: View.OnClickListener {
+                override fun onClick(view: View) {
+                    viewHolder.thisAlarm.cancel()
+                    localAlarmManager.removeAlarm(viewHolder.thisAlarm)
+                    this@AlarmListAdapter.notifyDataSetInvalidated()
+                }
+            })
             return rowMain
         }
 
-        override fun getItem(p0: Int): Any {
-            return "placeholder"
+        private class ViewHolder(val thisAlarm: Alarm, val alarmTime: TextView,
+                                 val cancelButton: AppCompatImageButton)
+
+        override fun getItem(position: Int): Any {
+            return localAlarmManager.getAlarmByPosition(position)
         }
 
-        override fun getItemId(p0: Int): Long {
-            return p0.toLong()
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
         }
 
         override fun getCount(): Int {
@@ -58,10 +73,12 @@ class MainActivity : AppCompatActivity() {
         fun alarmString(time: Long): String {
             val cal = Calendar.getInstance()
             cal.setTimeInMillis(time)
-            val hour = if (cal.get(HOUR) == 0) 12 else cal.get(HOUR)
+            val hour = cal.get(HOUR)
+            val hourString = if (hour == 0) "12" else "$hour"
             val minute = cal.get(MINUTE)
+            val minuteString = if (minute < 10) "0$minute" else "$minute"
             val am_pm = if (cal.get(AM_PM) == 1) "pm" else "am"
-            return "$hour:$minute $am_pm"
+            return "$hourString:$minuteString $am_pm"
         }
 
     }

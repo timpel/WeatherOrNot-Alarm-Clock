@@ -2,13 +2,16 @@ package com.timwp.weatherornotalarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.Ringtone
-import java.util.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
+import java.io.File
+import java.io.FileInputStream
+import kotlin.math.abs
 
-class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
+class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alarm> {
     override fun compareTo(other: Alarm): Int {
         return (if (alarmTime > other.getAlarmTime()) 1 else -1)
     }
@@ -20,10 +23,12 @@ class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
     private var ringing = false
     private var checkAgain = settings.keepChecking === "true"
     private var snooze = settings.snoozeTime
-    private val alarmID = (Calendar.getInstance().timeInMillis).toInt()
+    private val alarmID = settings.id
     private val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
     lateinit var pendingAlarmIntent: PendingIntent
+    private var active = true
+    private var repeat: Array<String> = settings.repeat
 
     fun getID(): Int {
         return alarmID
@@ -33,11 +38,22 @@ class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
         return alarmTime
     }
 
+    fun activate() {
+        active = true
+        persist()
+    }
+
+    fun deactivate() {
+        active = false
+        persist()
+    }
+
     fun set() {
         alarmIntent.action = "com.timwp.alarmtrigger"
         pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingAlarmIntent)
         localAlarmManager.addAlarm(this)
+        persist()
     }
     fun edit(settings: IAlarmSettings, con: Context) {
         cancel()
@@ -49,6 +65,7 @@ class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
     }
     fun cancel() {
         systemAlarmManager.cancel(pendingAlarmIntent)
+        depersist()
     }
     fun trigger() {
         if (matchesWeatherCriteria()) ring()
@@ -73,5 +90,18 @@ class Alarm(settings: IAlarmSettings, con: Context): Comparable<Alarm> {
     }
     fun addSnoozeTime(): Long {
         return alarmTime + (if (snooze === "Off") 0 else (snooze.get(0).toInt() * 60000))
+    }
+
+    private fun persist() {
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val fileObject = PersistentAlarmSettings(settings, active)
+        val fileString: String = gson.toJson(fileObject, PersistentAlarmSettings::class.java)
+
+        val path = context.filesDir
+        File(path, settings.id.toString()).writeText(fileString)
+    }
+
+    private fun depersist() {
+        context.deleteFile(settings.id.toString())
     }
 }
