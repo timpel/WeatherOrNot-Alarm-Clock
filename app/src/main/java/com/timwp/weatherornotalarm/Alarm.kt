@@ -64,6 +64,8 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         set()
     }
     fun cancel() {
+        alarmIntent.action = "com.timwp.alarmtrigger"
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.cancel(pendingAlarmIntent)
         depersist()
     }

@@ -92,6 +92,8 @@ class SetAlarmActivity : AppCompatActivity() {
         val alarmSettings = IAlarmSettings (
             abs((Calendar.getInstance().timeInMillis).toInt()),
             calendar.timeInMillis,
+            timepicker.hour,
+            timepicker.minute,
             "Vancouver, BC", // TODO: use real info
             weatherCriteria,
             "false",

@@ -4,11 +4,13 @@ import android.content.Context
 import java.util.*
 
 data class IAlarmSettings(
-    val id: Int,
-    val time: Long,
-    val location: String,
-    val criteria: IWeatherCriteria,
-    val keepChecking: String,
-    val snoozeTime: String,
-    val repeat: Array<String>
+    var id: Int,
+    var time: Long,
+    var hour: Int,
+    var minute: Int,
+    var location: String,
+    var criteria: IWeatherCriteria,
+    var keepChecking: String,
+    var snoozeTime: String,
+    var repeat: Array<String>
 )
