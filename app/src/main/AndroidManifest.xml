@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.timwp.weatherornotalarm">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,15 +19,16 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".BootReceiver"
-                    android:exported="true"
-                    android:enabled="true">
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="com.timwp.alarmtrigger" />
@@ -36,7 +37,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".SetAlarmActivity"></activity>
+        <activity android:name=".SetAlarmActivity" />
+        <activity android:name=".RingSliderActivity" />
     </application>
 
 </manifest>

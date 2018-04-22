@@ -78,6 +78,7 @@ class SetAlarmActivity : AppCompatActivity() {
     fun setAlarm(view: View) {
         calendar.set(Calendar.HOUR_OF_DAY, timepicker.hour)
         calendar.set(Calendar.MINUTE, timepicker.minute)
+        calendar.set(Calendar.SECOND, 0)
         val repeatDays = arrayOf("Never") // TODO: use real info
 
         val weatherCriteria = IWeatherCriteria (

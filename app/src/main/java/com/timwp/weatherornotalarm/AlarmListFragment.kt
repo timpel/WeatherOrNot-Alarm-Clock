@@ -2,30 +2,36 @@ package com.timwp.weatherornotalarm
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.Fragment
+import android.view.ViewGroup
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatImageButton
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import com.google.gson.Gson
 
-class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val alarmList: ListView = this.findViewById(R.id.alarmList)
-        alarmList.adapter = AlarmListAdapter(this)
-        listPersistedAlarms(this)
+class AlarmListFragment: Fragment() {
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater!!.inflate(
+                R.layout.activity_main, container, false) as ViewGroup
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val alarmList: ListView = view!!.findViewById(R.id.alarmList)
+        alarmList.adapter = AlarmListFragment.AlarmListAdapter(context)
+        listPersistedAlarms(context)
     }
 
     fun addAlarm(view: View) {
-        val launchIntent = Intent(applicationContext, SetAlarmActivity::class.java)
+        val launchIntent = Intent(context, SetAlarmActivity::class.java)
         startActivity(launchIntent)
         Log.e("Logging", "in addAlarm")
     }

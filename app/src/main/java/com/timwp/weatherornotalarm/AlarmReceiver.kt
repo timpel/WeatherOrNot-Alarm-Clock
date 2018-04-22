@@ -3,13 +3,13 @@ package com.timwp.weatherornotalarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
+import android.support.v4.content.ContextCompat.startActivity
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent!!.action.equals("com.timwp.alarmtrigger")) {
-            Toast.makeText(context,"Ring ring ring", Toast.LENGTH_LONG).show()
+            val launchIntent = Intent(context, RingSliderActivity::class.java)
+            startActivity(context, launchIntent, null)
         }
     }
 }
