@@ -16,37 +16,21 @@ import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var localAlarmManager: LocalAlarmManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val alarmList: ListView = this.findViewById(R.id.alarmList)
         alarmList.adapter = AlarmListAdapter(this)
-        listPersistedAlarms(this)
+        localAlarmManager = LocalAlarmManager.getInstance(this)
+        localAlarmManager.update(this)
     }
 
     fun addAlarm(view: View) {
         val launchIntent = Intent(applicationContext, SetAlarmActivity::class.java)
         startActivity(launchIntent)
         Log.e("Logging", "in addAlarm")
-    }
-
-    fun listPersistedAlarms(context: Context) {
-        val files =  context.filesDir.listFiles { dir, filename -> filename != "instant-run" }
-        val localAlarmManager = LocalAlarmManager.getInstance(context)
-        if (files.size != localAlarmManager.numberOfAlarms()) {
-            val gson = Gson()
-            files.forEach {
-                try {
-                    val persistedAlarm = gson.fromJson(it.readText(), PersistentAlarmSettings::class.java)
-                    val alarm = Alarm(persistedAlarm.settings, context)
-                    if (!persistedAlarm.active) alarm.deactivate()
-                    localAlarmManager.addAlarm(alarm)
-                    Log.i("MainActivity", "Alarm " + alarm.getID() + " added to localAlarmManager")
-                } catch(err: Error) {
-                    Log.e("MainActivity", "Could not add file to localAlarmManager")
-                }
-            }
-        }
     }
 
     private class AlarmListAdapter(val mContext: Context): BaseAdapter() {

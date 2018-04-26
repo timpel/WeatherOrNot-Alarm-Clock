@@ -118,23 +118,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Tone"
-        app:layout_constraintBottom_toBottomOf="@+id/tone_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/tone_label"
         app:layout_constraintEnd_toEndOf="@+id/textView14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tone_spinner" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Snooze"
-        app:layout_constraintBottom_toBottomOf="@+id/snooze_spinner"
-        app:layout_constraintEnd_toEndOf="@+id/textView17"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/snooze_spinner" />
+        app:layout_constraintTop_toTopOf="@+id/tone_label" />
 
     <Spinner
         android:id="@+id/condition_spinner"
@@ -210,34 +197,12 @@
         android:id="@+id/repeat_spinner"
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/tone_spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView14" />
-
-    <Spinner
-        android:id="@+id/tone_spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/snooze_spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView17" />
-
-    <Spinner
-        android:id="@+id/snooze_spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/set_button"
+        app:layout_constraintBottom_toTopOf="@+id/tone_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView18" />
+        app:layout_constraintStart_toEndOf="@+id/textView14" />
 
     <Spinner
         android:id="@+id/wind_speed_spinner"
@@ -274,6 +239,21 @@
         app:layout_constraintEnd_toStartOf="@+id/set_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tone_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:onClick="pickTone"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/set_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView17" />
 
 
 </android.support.constraint.ConstraintLayout>

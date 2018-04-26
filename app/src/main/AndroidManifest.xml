@@ -38,7 +38,8 @@
         </receiver>
 
         <activity android:name=".SetAlarmActivity" />
-        <activity android:name=".RingSliderActivity" />
+        <activity android:name=".RingSliderActivity"
+            android:clearTaskOnLaunch = "true"/>
     </application>
 
 </manifest>

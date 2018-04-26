@@ -1,6 +1,8 @@
 package com.timwp.weatherornotalarm
 
 import android.content.Context
+import android.media.Ringtone
+import android.net.Uri
 import java.util.*
 
 data class IAlarmSettings(
@@ -11,6 +13,6 @@ data class IAlarmSettings(
     var location: String,
     var criteria: IWeatherCriteria,
     var keepChecking: String,
-    var snoozeTime: String,
-    var repeat: Array<String>
+    var repeat: Array<String>,
+    var ringtoneURIString: String
 )

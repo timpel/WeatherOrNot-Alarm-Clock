@@ -13,6 +13,8 @@ import android.util.Log
 
 class RingSliderActivity : FragmentActivity() {
 
+    var alarmID: Int = -1
+
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
@@ -27,6 +29,9 @@ class RingSliderActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
         setContentView(R.layout.activity_screen_slider)
+
+
+
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = findViewById(R.id.pager)
