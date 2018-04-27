@@ -1,5 +1,6 @@
 package com.timwp.weatherornotalarm
 
+import android.app.Activity
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -8,13 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_set_alarm.*
-import java.net.URI
 import java.util.*
 import kotlin.math.abs
 
@@ -35,18 +31,20 @@ class SetAlarmActivity : AppCompatActivity() {
             "Any",
             "Above",
             "Any",
+            "C",
             "Above",
             "Any",
             "Any",
+            "km",
             "Any"
     )
 
-    val CONDITION_PICKER_OK_RESPONSE = 1
-    val TEMP_PICKER_OK_RESPONSE = 2
-    val WIND_PICKER_OK_RESPONSE = 3
-    val FOG_PICKER_OK_RESPONSE = 4
-    val REPEAT_PICKER_OK_RESPONSE = 5
-    val TONE_PICKER_OK_RESPONSE = 6
+    val CONDITION_PICKER_REQUEST_CODE = 1
+    val TEMP_PICKER_REQUEST_CODE = 2
+    val WIND_PICKER_REQUEST_CODE = 3
+    val FOG_PICKER_REQUEST_CODE = 4
+    val REPEAT_PICKER_REQUEST_CODE = 5
+    val TONE_PICKER_REQUEST_CODE = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,12 +119,15 @@ class SetAlarmActivity : AppCompatActivity() {
     }
 
     fun pickConditions(view: View) {
-        val launchIntent = Intent(applicationContext, ConditionPicker::class.java)
-        startActivityForResult(launchIntent, 1)
+        val launchIntent = Intent(applicationContext, ConditionPickerActivity::class.java)
+        startActivityForResult(launchIntent, CONDITION_PICKER_REQUEST_CODE)
     }
 
     fun pickTemp(view: View) {
-
+        val launchIntent = Intent(applicationContext, TemperaturePickerActivity::class.java)
+        launchIntent.putExtra("CURRENT_TEMP_CRITERIA", arrayOf(weatherCriteria.tempOperator,
+                weatherCriteria.temp, weatherCriteria.tempUnit))
+        startActivityForResult(launchIntent, TEMP_PICKER_REQUEST_CODE)
     }
 
     fun pickWind(view: View) {
@@ -147,29 +148,45 @@ class SetAlarmActivity : AppCompatActivity() {
         tonePickerIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM)
         tonePickerIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtonePath)
         tonePickerIntent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, false)
-        startActivityForResult(tonePickerIntent, TONE_PICKER_OK_RESPONSE)
+        startActivityForResult(tonePickerIntent, TONE_PICKER_REQUEST_CODE)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        when (requestCode) {
-            TONE_PICKER_OK_RESPONSE -> {
-                Log.e("onActivityResult", "toneTicker responded")
-                val pickedURI = data.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                if (pickedURI != null) {
-                    ringtonePath = pickedURI
-                    toneLabel.text = RingtoneManager.getRingtone(this, ringtonePath).getTitle(this)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            when (requestCode) {
+                TONE_PICKER_REQUEST_CODE -> {
+                    Log.e("onActivityResult", "TonePicker responded")
+                    val pickedURI = data.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    if (pickedURI != null) {
+                        ringtonePath = pickedURI
+                        toneLabel.text = RingtoneManager.getRingtone(this, ringtonePath).getTitle(this)
+                    }
                 }
-            }
-            CONDITION_PICKER_OK_RESPONSE -> {
-                Log.e("ConditionPicker result", "got a response")
-                val pickedCondition = data.getStringExtra("PICKED_CONDITION")
-                if (pickedCondition == null) Log.e("SetAlarmAcitivity: OnActivityResult", "Null response data from ConditionPicker")
-                else {
-                    conditionLabel.text = pickedCondition
-                    weatherCriteria.conditions = pickedCondition
+                CONDITION_PICKER_REQUEST_CODE -> {
+                    Log.e("ConditionPickerActivity result", "ConditionPicker responded")
+                    val pickedCondition = data.getStringExtra("PICKED_CONDITION")
+                    if (pickedCondition == null) Log.e("SetAlarmAcitivity: OnActivityResult", "Null response data from ConditionPickerActivity")
+                    else {
+                        conditionLabel.text = pickedCondition
+                        weatherCriteria.conditions = pickedCondition
+                    }
                 }
+                TEMP_PICKER_REQUEST_CODE -> {
+                    Log.e("TemperaturePickerActivity result", "TemperaturePicker responded")
+                    val pickedTemperature = data.getStringArrayExtra("PICKED_TEMPERATURE")
+                    if (pickedTemperature == null) {
+                        tempLabel.text = applicationContext.getString(R.string.any)
+                        weatherCriteria.temp = "Any"
+                    } else {
+                        val displayString = pickedTemperature.joinToString(" ")
+                        tempLabel.text = displayString
+                        weatherCriteria.tempOperator = pickedTemperature[0]
+                        weatherCriteria.temp = pickedTemperature[1]
+                        weatherCriteria.tempUnit = pickedTemperature[2].drop(1)
+                    }
+                }
+                else -> Log.e("SetAlarmAcitivity: OnActivityResult", "Unknown Request Code")
             }
-            else -> Log.e("SetAlarmAcitivity: OnActivityResult", "Unknown Request Code")
         }
     }
 }

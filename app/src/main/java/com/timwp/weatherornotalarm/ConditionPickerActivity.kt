@@ -11,7 +11,7 @@ import android.content.Intent
 import android.widget.TextView
 
 
-class ConditionPicker : ListActivity() {
+class ConditionPickerActivity : ListActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
