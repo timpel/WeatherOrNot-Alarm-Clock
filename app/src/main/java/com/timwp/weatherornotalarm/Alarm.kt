@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
+import java.util.*
 import kotlin.math.abs
 
 class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alarm> {
@@ -20,7 +21,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         return (if (alarmTime > other.getAlarmTime()) 1 else -1)
     }
 
-    private val SNOOZE_TIME = 1000 * 60 * 10
+    private val SNOOZE_TIME = 10000 //* 60 * 10
 
     private val localAlarmManager = LocalAlarmManager.getInstance(con)
     private var context = con
@@ -87,8 +88,10 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     }
     fun snooze() {
         ringing = false
-        alarmTime = addSnoozeTime()
-        set()
+        alarmIntent.action = "com.timwp.alarmtrigger"
+        alarmIntent.putExtra("ALARM_ID", alarmID)
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, addSnoozeTime(), pendingAlarmIntent)
     }
     fun stop() {
         ringing = false
@@ -102,7 +105,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         return false
     }
     fun addSnoozeTime(): Long {
-        return alarmTime + SNOOZE_TIME
+        return Calendar.getInstance().timeInMillis + SNOOZE_TIME
     }
 
     private fun persist() {

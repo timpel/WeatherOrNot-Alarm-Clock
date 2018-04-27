@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.app.FragmentActivity
 import android.util.Log
+import android.view.View
 
 
 class RingSliderActivity : FragmentActivity() {
@@ -50,11 +51,15 @@ class RingSliderActivity : FragmentActivity() {
             override fun onPageSelected(position: Int) {
                 Log.i("PageSelected", position.toString())
                 if (position == 0 || position == 2) {
-                    val launchIntent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(launchIntent)
+                    back()
                 }
             }
         })
+    }
+
+    fun back() {
+        val launchIntent = Intent(applicationContext, MainActivity::class.java)
+        startActivity(launchIntent)
     }
 
     /**

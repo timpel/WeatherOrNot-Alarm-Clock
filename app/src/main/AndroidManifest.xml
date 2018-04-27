@@ -38,8 +38,10 @@
         </receiver>
 
         <activity android:name=".SetAlarmActivity" />
-        <activity android:name=".RingSliderActivity"
-            android:clearTaskOnLaunch = "true"/>
+        <activity
+            android:name=".RingSliderActivity"
+            android:clearTaskOnLaunch="true" />
+        <activity android:name=".ConditionPicker"></activity>
     </application>
 
 </manifest>

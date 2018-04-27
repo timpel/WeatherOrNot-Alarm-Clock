@@ -11,8 +11,7 @@
         android:id="@+id/alarmList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-    </ListView>
+        app:layout_constraintTop_toTopOf="parent"></ListView>
 
     <Button
         android:id="@+id/edit_button"

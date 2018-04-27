@@ -15,11 +15,5 @@ class BlankFragment: Fragment() {
         return inflater!!.inflate(
                 R.layout.fragment_blank, container, false) as ViewGroup
     }
-
-    override fun onResume() {
-        super.onResume()
-        val launchIntent = Intent(context, MainActivity::class.java)
-        //startActivity(launchIntent)
-    }
 }
 
