@@ -19,7 +19,6 @@ class SetAlarmActivity : AppCompatActivity() {
     lateinit var conditionLabel: TextView
     lateinit var tempLabel: TextView
     lateinit var windLabel: TextView
-    lateinit var fogLabel: TextView
     lateinit var repeatLabel: TextView
     lateinit var toneLabel: TextView
     lateinit var calendar: Calendar
@@ -35,16 +34,14 @@ class SetAlarmActivity : AppCompatActivity() {
             "Above",
             "Any",
             "Any",
-            "km",
-            "Any"
+            "km"
     )
 
     val CONDITION_PICKER_REQUEST_CODE = 1
     val TEMP_PICKER_REQUEST_CODE = 2
     val WIND_PICKER_REQUEST_CODE = 3
-    val FOG_PICKER_REQUEST_CODE = 4
-    val REPEAT_PICKER_REQUEST_CODE = 5
-    val TONE_PICKER_REQUEST_CODE = 6
+    val REPEAT_PICKER_REQUEST_CODE = 4
+    val TONE_PICKER_REQUEST_CODE = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,29 +50,9 @@ class SetAlarmActivity : AppCompatActivity() {
         conditionLabel = findViewById(R.id.conditions_label)
         tempLabel = findViewById(R.id.temp_label)
         windLabel = findViewById(R.id.wind_label)
-        fogLabel = findViewById(R.id.fog_label)
         toneLabel = findViewById(R.id.tone_label)
         calendar = Calendar.getInstance()
         ringtonePath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-
-        val conditionItems = arrayOf("Any", "Rain", "Snow", "Sunny", "Cloudy")
-        val tempOpItems = arrayOf("Above", "Below")
-        val tempNumItems = arrayOf("Any", "-30", "-25", "-20", "-15", "-10", "-5", "0", "5", "10", "15", "20", "25", "30")
-        val windOpItems = arrayOf("Above", "Below")
-        val windSpeedItems = arrayOf("Any", "0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50")
-        val windDirItems = arrayOf("Any", "N", "NE", "E", "SE", "S", "SW", "W", "NW")
-        val fogItems = arrayOf("Any", "Foggy", "No fog")
-        val repeatItems = arrayOf("Never", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays")
-
-        /*
-        conditionSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, conditionItems)
-        tempOpSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tempOpItems)
-        tempNumSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tempNumItems)
-        windOpSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, windOpItems)
-        windSpeedSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, windSpeedItems)
-        windDirSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, windDirItems)
-        fogSpinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fogItems)
-        */
 
         toneLabel.text = RingtoneManager.getRingtone(this, ringtonePath).getTitle(this)
     }
@@ -131,11 +108,10 @@ class SetAlarmActivity : AppCompatActivity() {
     }
 
     fun pickWind(view: View) {
-
-    }
-
-    fun pickFog(view: View) {
-
+        val launchIntent = Intent(applicationContext, WindPickerActivity::class.java)
+        launchIntent.putExtra("CURRENT_WIND_CRITERIA", arrayOf(weatherCriteria.windOperator,
+                weatherCriteria.windSpeed, weatherCriteria.windUnit, weatherCriteria.windDirection))
+        startActivityForResult(launchIntent, WIND_PICKER_REQUEST_CODE)
     }
 
     fun pickRepeat(view: View) {
@@ -183,6 +159,22 @@ class SetAlarmActivity : AppCompatActivity() {
                         weatherCriteria.tempOperator = pickedTemperature[0]
                         weatherCriteria.temp = pickedTemperature[1]
                         weatherCriteria.tempUnit = pickedTemperature[2].drop(1)
+                    }
+                }
+                WIND_PICKER_REQUEST_CODE -> {
+                    Log.e("WindPickerActivity result", "WindPicker responded")
+                    val picked = data.getStringArrayExtra("PICKED_WIND")
+                    if (picked == null) {
+                        windLabel.text = applicationContext.getString(R.string.any)
+                        weatherCriteria.windSpeed = "Any"
+                        weatherCriteria.windDirection = "Any"
+                    } else {
+                        val displayString = picked.joinToString(" ")
+                        windLabel.text = displayString
+                        weatherCriteria.windOperator = picked[0]
+                        weatherCriteria.windSpeed = picked[1]
+                        weatherCriteria.windUnit = picked[2]
+                        weatherCriteria.windDirection = picked[3]
                     }
                 }
                 else -> Log.e("SetAlarmAcitivity: OnActivityResult", "Unknown Request Code")

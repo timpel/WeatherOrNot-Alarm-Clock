@@ -12,7 +12,6 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Intent
 import android.widget.NumberPicker
-import android.widget.TextView
 
 
 class TemperaturePickerActivity : AppCompatActivity() {
@@ -60,7 +59,7 @@ class TemperaturePickerActivity : AppCompatActivity() {
     }
 
     private fun gatherCriteria(): Array<String>? {
-        return if (tempRadios.checkedRadioButtonId == R.id.any_radio) null else {
+        return if (tempRadios.checkedRadioButtonId == R.id.norepeat_radio) null else {
             arrayOf(tempOpPicker.displayedValues[tempOpPicker.value],
                     tempNumPicker.displayedValues[tempNumPicker.value],
                     tempUnitPicker.displayedValues[tempUnitPicker.value])
@@ -70,15 +69,15 @@ class TemperaturePickerActivity : AppCompatActivity() {
     private fun initializeRadios(currentTempPicks: Array<String>) {
         tempRadios = findViewById(R.id.tempRadios)
         if (currentTempPicks[1] != applicationContext.getString(R.string.any)) {
-            tempRadios.check(R.id.filter_radio)
+            tempRadios.check(R.id.repeat_radio)
         }
         tempRadios.setOnCheckedChangeListener({ _, checkedId ->
             when (checkedId) {
-                R.id.any_radio -> {
+                R.id.norepeat_radio -> {
                     Log.e("radioGroup onCheckedChangedListener", "Any checked")
                     hideTempPickers()
                 }
-                R.id.filter_radio -> {
+                R.id.repeat_radio -> {
                     Log.e("radioGroup onCheckedChangedListener", "Filter checked")
                     revealTempPickers()
                 }

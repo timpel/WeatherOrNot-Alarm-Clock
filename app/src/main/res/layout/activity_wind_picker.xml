@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/windRadios"
+        app:layout_constraintTop_toBottomOf="@+id/repeatRadios"
         tools:visibility="invisible">
 
         <NumberPicker
@@ -37,7 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/windNumPicker"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,20 +47,29 @@
             android:id="@+id/windNumPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="72dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/windUnitPicker"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/windOpPicker"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <NumberPicker
             android:id="@+id/windUnitPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="144dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/windDirectionPicker"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/windNumPicker"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <NumberPicker
             android:id="@+id/windDirectionPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -67,24 +78,24 @@
     </android.support.constraint.ConstraintLayout>
 
     <RadioGroup
-        android:id="@+id/windRadios"
+        android:id="@+id/repeatRadios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:checkedButton="@+id/any_radio"
+        android:checkedButton="@+id/norepeat_radio"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
-            android:id="@+id/any_radio"
+            android:id="@+id/norepeat_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Any" />
 
         <RadioButton
-            android:id="@+id/filter_radio"
+            android:id="@+id/repeat_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

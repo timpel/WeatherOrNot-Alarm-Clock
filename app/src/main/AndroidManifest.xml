@@ -43,7 +43,8 @@
             android:clearTaskOnLaunch="true" />
         <activity android:name=".ConditionPickerActivity" />
         <activity android:name=".TemperaturePickerActivity" />
-        <activity android:name=".WindPickerActivity"></activity>
+        <activity android:name=".WindPickerActivity" />
+        <activity android:name=".RepeatPickerActivity"></activity>
     </application>
 
 </manifest>

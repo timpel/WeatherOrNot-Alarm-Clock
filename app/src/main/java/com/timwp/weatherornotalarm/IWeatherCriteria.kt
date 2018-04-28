@@ -8,6 +8,5 @@ data class IWeatherCriteria(
     var windOperator: String,
     var windSpeed: String,
     var windDirection: String,
-    var windUnit: String,
-    var fog: String
+    var windUnit: String
 )

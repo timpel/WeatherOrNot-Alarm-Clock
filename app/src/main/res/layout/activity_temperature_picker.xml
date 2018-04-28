@@ -65,19 +65,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:checkedButton="@+id/any_radio"
+        android:checkedButton="@+id/norepeat_radio"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
-            android:id="@+id/any_radio"
+            android:id="@+id/norepeat_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Any Temperature" />
 
         <RadioButton
-            android:id="@+id/filter_radio"
+            android:id="@+id/repeat_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
