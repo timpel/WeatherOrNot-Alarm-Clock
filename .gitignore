@@ -1,6 +1,9 @@
 # Text files
 *.txt
 
+# Drawables
+app/src/main/res/drawable/
+
 # Built application files
 *.apk
 *.ap_
