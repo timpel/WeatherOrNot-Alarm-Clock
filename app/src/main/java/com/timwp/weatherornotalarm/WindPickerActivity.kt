@@ -61,7 +61,7 @@ class WindPickerActivity : AppCompatActivity() {
     }
 
     private fun gatherCriteria(): Array<String>? {
-        return if (windRadios.checkedRadioButtonId == R.id.norepeat_radio) null else {
+        return if (windRadios.checkedRadioButtonId == R.id.any_radio) null else {
             arrayOf(windOpPicker.displayedValues[windOpPicker.value],
                     windNumPicker.displayedValues[windNumPicker.value],
                     windUnitPicker.displayedValues[windUnitPicker.value],
@@ -70,17 +70,17 @@ class WindPickerActivity : AppCompatActivity() {
     }
 
     private fun initializeRadios(currentWindPicks: Array<String>) {
-        windRadios = findViewById(R.id.repeatRadios)
+        windRadios = findViewById(R.id.windRadios)
         if (currentWindPicks[1] != applicationContext.getString(R.string.any)) {
-            windRadios.check(R.id.repeat_radio)
+            windRadios.check(R.id.filter_radio)
         }
         windRadios.setOnCheckedChangeListener({ _, checkedId ->
             when (checkedId) {
-                R.id.norepeat_radio -> {
+                R.id.any_radio -> {
                     Log.e("radioGroup onCheckedChangedListener", "Any checked")
                     hidePickers()
                 }
-                R.id.repeat_radio -> {
+                R.id.filter_radio -> {
                     Log.e("radioGroup onCheckedChangedListener", "Filter checked")
                     revealPickers()
                 }

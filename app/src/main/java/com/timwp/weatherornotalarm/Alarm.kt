@@ -36,7 +36,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     private var active = true
     private val ringtoneURI = Uri.parse(settings.ringtoneURIString)
     lateinit var ringtone: Ringtone
-    private var repeat: Array<String> = settings.repeat
+    private var repeat: BooleanArray = settings.repeat
 
     fun getID(): Int {
         return alarmID

@@ -13,6 +13,6 @@ data class IAlarmSettings(
     var location: String,
     var criteria: IWeatherCriteria,
     var keepChecking: String,
-    var repeat: Array<String>,
+    var repeat: BooleanArray,
     var ringtoneURIString: String
 )

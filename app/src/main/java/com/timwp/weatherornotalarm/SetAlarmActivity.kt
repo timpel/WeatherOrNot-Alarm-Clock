@@ -37,6 +37,8 @@ class SetAlarmActivity : AppCompatActivity() {
             "km"
     )
 
+    private var repeatDays = BooleanArray(7)
+
     val CONDITION_PICKER_REQUEST_CODE = 1
     val TEMP_PICKER_REQUEST_CODE = 2
     val WIND_PICKER_REQUEST_CODE = 3
@@ -51,6 +53,7 @@ class SetAlarmActivity : AppCompatActivity() {
         tempLabel = findViewById(R.id.temp_label)
         windLabel = findViewById(R.id.wind_label)
         toneLabel = findViewById(R.id.tone_label)
+        repeatLabel = findViewById(R.id.repeat_label)
         calendar = Calendar.getInstance()
         ringtonePath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
@@ -75,7 +78,6 @@ class SetAlarmActivity : AppCompatActivity() {
             calendar.set(Calendar.MINUTE, timepicker.minute + 1)
         }
         calendar.set(Calendar.SECOND, second)
-        val repeatDays = arrayOf("Never") // TODO: use real info
 
         val alarmSettings = IAlarmSettings(
                 abs((Calendar.getInstance().timeInMillis).toInt()),
@@ -115,7 +117,9 @@ class SetAlarmActivity : AppCompatActivity() {
     }
 
     fun pickRepeat(view: View) {
-
+        val launchIntent = Intent(applicationContext, RepeatPickerActivity::class.java)
+        launchIntent.putExtra("CURRENT_REPEATS", repeatDays)
+        startActivityForResult(launchIntent, REPEAT_PICKER_REQUEST_CODE)
     }
 
     fun pickTone(view: View) {
@@ -176,6 +180,13 @@ class SetAlarmActivity : AppCompatActivity() {
                         weatherCriteria.windUnit = picked[2]
                         weatherCriteria.windDirection = picked[3]
                     }
+                }
+                REPEAT_PICKER_REQUEST_CODE -> {
+                    Log.e("RepeatPickerActivity result", "RepeatPicker responded")
+                    repeatDays = data.getBooleanArrayExtra("PICKED_REPEATS")
+                    val days = util.toDayArray(repeatDays)
+                    val displayString = days.joinToString(", ")
+                    repeatLabel.text = if (displayString.isEmpty()) "Never" else displayString
                 }
                 else -> Log.e("SetAlarmAcitivity: OnActivityResult", "Unknown Request Code")
             }
