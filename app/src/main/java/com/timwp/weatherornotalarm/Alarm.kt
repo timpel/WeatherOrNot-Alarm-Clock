@@ -17,6 +17,11 @@ import java.util.*
 import kotlin.math.abs
 
 class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alarm> {
+    companion object {
+        val ALARM_TYPE_DEFAULT = 0
+        val ALARM_TYPE_WEATHER = 1
+    }
+
     override fun compareTo(other: Alarm): Int {
         return (if (alarmTime > other.getAlarmTime()) 1 else -1)
     }

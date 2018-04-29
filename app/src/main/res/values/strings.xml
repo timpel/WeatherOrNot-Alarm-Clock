@@ -82,4 +82,18 @@
 
     <!-- Criteria labels -->
     <string name="any">Any</string>
+    <string name="conditions">Conditions</string>
+    <string name="temperature">Temperature</string>
+    <string name="wind">Wind</string>
+    <string name="sun">Sunny</string>
+    <string name="cloud">Cloudy</string>
+    <string name="rain">Raining</string>
+    <string name="snow">Snowing</string>
+    <string name="temp_above">Temp (Above)</string>
+    <string name="temp_below">Temp (Below)</string>
+
+    <!-- Labels -->
+    <string name="no_default">No Default Alarm</string>
+    <string name="no_weather">No Weather Alarm</string>
+    <string name="none">None</string>
 </resources>

@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetMultiAlarmActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/default_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/ripple"
+        android:onClick="onClickDefault"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/default_title"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Default Alarm Time"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/default_alarm_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/default_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/repeat_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/default_bar">
+
+        <TextView
+            android:id="@+id/repeat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Repeat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/day_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repeat_title">
+
+            <CheckedTextView
+                android:id="@+id/sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:text=" SU "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/monday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" M "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tuesday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/sunday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" TU "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/wednesday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/monday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" W "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/thursday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tuesday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" TH "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/friday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/wednesday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" F "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/saturday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/thursday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckedTextView
+                android:id="@+id/saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:text=" SA "
+                android:textSize="18sp"
+                android:textColor="@android:color/darker_gray"
+                android:onClick="onClickDayCheckedText"
+                android:checked="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/friday"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/toneBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClickToneBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeat_bar">
+
+        <TextView
+            android:id="@+id/tone_title"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Tone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tone_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tone_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/weatherAlarmBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/ripple"
+        android:onClick="onClickWeather"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toneBar">
+
+        <TextView
+            android:id="@+id/weather_alarm_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/weather_alarm_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_alarm_title"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="WeatherAlarm Time"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/weather_criteria_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/ripple"
+        android:onClick="onClickCriteria"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherAlarmBar">
+
+        <TextView
+            android:id="@+id/weather_criteria_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/weather_criteria_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_criteria_title"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="WeatherAlarm Criteria"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/weather_criteria_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="Weather Criteria Icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/weather_criteria_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/wind_icon" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:onClick="onClickCancelButton"
+            android:text="Cancel"
+            app:layout_constraintEnd_toStartOf="@+id/set_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/set_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:onClick="onClickSetAlarmButton"
+            android:text="Set"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

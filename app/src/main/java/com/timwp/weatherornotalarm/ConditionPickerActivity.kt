@@ -16,8 +16,8 @@ class ConditionPickerActivity : ListActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_condition_picker)
-        val conditionOptions = arrayOf("Rain", "Snow", "Sunny", "Cloudy", "Any")
-        //val conditionList: ListView = this.findViewById(R.id.conditionList)
+        val conditionOptions = arrayOf(getString(R.string.sun), getString(R.string.cloud),
+                getString(R.string.rain), getString(R.string.snow))
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, conditionOptions)
         listAdapter = adapter
     }
@@ -25,7 +25,7 @@ class ConditionPickerActivity : ListActivity() {
     override fun onListItemClick(l: ListView, v: View, pos: Int, id: Long) {
         super.onListItemClick(l, v, pos, id)
         val returnIntent = Intent()
-        returnIntent.putExtra("PICKED_CONDITION", (v as TextView).text)
+        returnIntent.putExtra("PICKED_CONDITION", (v as TextView).text as String)
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }

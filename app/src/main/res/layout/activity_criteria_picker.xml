@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".CriteriaPickerActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/conditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClickConditions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/conditions_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="General Conditions"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/temperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClickTemperature"
+        app:layout_constraintBottom_toTopOf="@+id/wind"
+        app:layout_constraintEnd_toEndOf="@+id/conditions"
+        app:layout_constraintStart_toStartOf="@+id/conditions"
+        app:layout_constraintTop_toBottomOf="@+id/conditions">
+
+        <TextView
+            android:id="@+id/temperature_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Temperature"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/wind"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClickWind"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/temperature"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/temperature"
+        app:layout_constraintTop_toBottomOf="@+id/temperature">
+
+        <TextView
+            android:id="@+id/wind_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Wind"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@id/conditions"
+        app:layout_constraintStart_toStartOf="@id/conditions"
+        app:layout_constraintTop_toBottomOf="@id/conditions" />
+
+    <View
+        android:id="@+id/divider9"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="@id/temperature"
+        app:layout_constraintStart_toStartOf="@id/temperature"
+        app:layout_constraintTop_toBottomOf="@id/temperature" />
+
+</android.support.constraint.ConstraintLayout>

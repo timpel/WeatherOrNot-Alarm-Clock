@@ -28,9 +28,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addAlarm(view: View) {
-        val launchIntent = Intent(applicationContext, SetAlarmActivity::class.java)
+        val launchIntent = Intent(applicationContext, SetMultiAlarmActivity::class.java)
+        launchIntent.putExtra("DEFAULT_CURRENTLY_SET", false)
+        launchIntent.putExtra("WEATHER_CURRENTLY_SET", false)
+        launchIntent.putExtra("CURRENT_REPEATS", BooleanArray(7))
+        launchIntent.putExtra("CURRENT_WEATHER_CRITERIA", Array(8, { _ -> "" }))
         startActivity(launchIntent)
-        Log.e("Logging", "in addAlarm")
+        Log.e("Logging", "in SetMultiAlarm")
     }
 
     private class AlarmListAdapter(val mContext: Context): BaseAdapter() {

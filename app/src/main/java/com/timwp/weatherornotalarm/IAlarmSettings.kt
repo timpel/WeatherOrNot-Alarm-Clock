@@ -6,6 +6,7 @@ import android.net.Uri
 import java.util.*
 
 data class IAlarmSettings(
+    var type: Int,
     var id: Int,
     var time: Long,
     var hour: Int,

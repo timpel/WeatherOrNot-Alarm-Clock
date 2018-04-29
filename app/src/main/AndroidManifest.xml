@@ -42,9 +42,23 @@
             android:name=".RingSliderActivity"
             android:clearTaskOnLaunch="true" />
         <activity android:name=".ConditionPickerActivity" />
-        <activity android:name=".TemperaturePickerActivity" />
-        <activity android:name=".WindPickerActivity" />
-        <activity android:name=".RepeatPickerActivity"></activity>
+        <activity
+            android:name=".TemperaturePickerActivity"
+            android:theme="@style/Theme.Dialog.NoActionBar" />
+        <activity
+            android:name=".WindPickerActivity"
+            android:theme="@style/Theme.Dialog.NoActionBar" />
+        <activity android:name=".RepeatPickerActivity" />
+        <activity android:name=".SetMultiAlarmActivity" />
+        <activity
+            android:name=".SetSingleAlarmActivity"
+            android:theme="@style/Theme.Dialog.NoActionBar" />
+        <activity
+            android:name=".CriteriaPickerActivity"
+            android:theme="@style/Theme.Dialog.NoActionBar" />
+        <activity android:name=".TemperaturePickerComboActivity" />
+        <activity android:name=".WindPickerComboActivity" />
+        <activity android:name=".AlarmListActivity"></activity>
     </application>
 
 </manifest>

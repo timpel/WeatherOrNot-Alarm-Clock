@@ -22,9 +22,7 @@ class SetAlarmActivity : AppCompatActivity() {
     lateinit var repeatLabel: TextView
     lateinit var toneLabel: TextView
     lateinit var calendar: Calendar
-    lateinit var rm: RingtoneManager
     lateinit var ringtonePath: Uri
-    lateinit var selectedTone: Ringtone
 
     private var weatherCriteria = IWeatherCriteria(
             "Any",
@@ -80,6 +78,7 @@ class SetAlarmActivity : AppCompatActivity() {
         calendar.set(Calendar.SECOND, second)
 
         val alarmSettings = IAlarmSettings(
+                Alarm.ALARM_TYPE_DEFAULT,
                 abs((Calendar.getInstance().timeInMillis).toInt()),
                 calendar.timeInMillis,
                 timepicker.hour,
