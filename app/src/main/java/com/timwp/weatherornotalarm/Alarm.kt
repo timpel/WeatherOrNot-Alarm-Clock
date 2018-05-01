@@ -24,36 +24,29 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     }
 
     override fun compareTo(other: Alarm): Int {
-        return (if (alarmTime > other.getAlarmTime()) 1 else -1)
+        return (if (settings.time > other.getAlarmTime()) 1 else -1)
     }
 
     private val SNOOZE_TIME = 10000 //* 60 * 10
-
-    private val localAlarmManager = LocalAlarmManager.getInstance(con)
     private var context = con
-    private var alarmTime = settings.time
-    private var loc = settings.location
     private var ringing = false
-    private var checkAgain = settings.keepChecking === "true"
-    private val alarmID = settings.id
     private val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
     lateinit var pendingAlarmIntent: PendingIntent
     private var active = true
     private val ringtoneURI = Uri.parse(settings.ringtoneURIString)
     lateinit var ringtone: Ringtone
-    private var repeat: BooleanArray = settings.repeat
 
     fun getSettings(): IAlarmSettings {
         return settings
     }
 
     fun getID(): Int {
-        return alarmID
+        return settings.id
     }
 
     fun getAlarmTime(): Long {
-        return alarmTime
+        return settings.time
     }
 
     fun getWeatherCriteria(): IWeatherCriteria {
@@ -91,40 +84,44 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         alarmIntent.action = "com.timwp.alarmtrigger"
         alarmIntent.putExtra("ALARM_TYPE", settings.type)
         alarmIntent.putExtra("ALARM_PAIR_ID", settings.pairID)
-        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingAlarmIntent)
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, settings.id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, settings.time, pendingAlarmIntent)
 
         val testCalendar = Calendar.getInstance()
-        testCalendar.timeInMillis = alarmTime
+        testCalendar.timeInMillis = settings.time
         Log.e("Alarm set()", "Alarm set for " + testCalendar.get(Calendar.HOUR_OF_DAY) + ":" + testCalendar.get(Calendar.MINUTE)
                 + ", " + testCalendar.get(Calendar.DAY_OF_YEAR))
         //localAlarmManager.addAlarm(this)
         //persist()
     }
-    fun edit(settings: IAlarmSettings, con: Context) {
+    /*
+    fun edit(newSettings: IAlarmSettings, con: Context) {
         cancel()
-        alarmTime = settings.time
+        this.settings.time = settings.time
         loc = settings.location
         checkAgain = settings.keepChecking === "true"
         set()
     }
+    */
     fun cancel() {
         alarmIntent.action = "com.timwp.alarmtrigger"
-        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, settings.id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.cancel(pendingAlarmIntent)
         //depersist()
     }
+    /*
     fun trigger() {
         if (matchesWeatherCriteria()) ring()
-        else if (checkAgain) snooze()
+        else if (settings.checkAgain) snooze()
         else cancel()
     }
+    */
     fun snooze() {
         ringing = false
         alarmIntent.action = "com.timwp.alarmtrigger"
         alarmIntent.putExtra("ALARM_TYPE", settings.type)
         alarmIntent.putExtra("ALARM_PAIR_ID", settings.pairID)
-        pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingAlarmIntent = PendingIntent.getBroadcast(context, settings.id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, addSnoozeTime(), pendingAlarmIntent)
     }
     fun stop() {
@@ -152,6 +149,14 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     }
     fun addSnoozeTime(): Long {
         return Calendar.getInstance().timeInMillis + SNOOZE_TIME
+    }
+    fun addADay() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = settings.time
+        Log.e("Alarm addADay()", "Old time: " + calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        settings.time = calendar.timeInMillis
+        Log.e("Alarm addADay()", "Old time: " + calendar.time)
     }
 /*
     private fun persist() {

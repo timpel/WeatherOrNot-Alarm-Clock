@@ -1,19 +1,20 @@
 package com.timwp.weatherornotalarm
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
+import android.support.constraint.ConstraintLayout
 import android.util.Log
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.TextView
 import com.timwp.weatherornotalarm.util.Companion.timeString
-import kotlinx.android.synthetic.main.activity_set_alarm.*
 import java.util.*
 import kotlin.math.abs
 
@@ -26,6 +27,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     private lateinit var boxArray: Array<CheckedTextView>
     private lateinit var weatherCriteriaIcon: ImageView
     private lateinit var weatherCriteriaLabel: TextView
+    private lateinit var weatherCriteriaBar: ConstraintLayout
     private var defaultTime: util.Companion.TimeObject? = null
     private var weatherTime: util.Companion.TimeObject? = null
     private lateinit var ringtonePath: Uri
@@ -112,6 +114,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     }
 
     private fun initializeWeatherCriteria() {
+        weatherCriteriaBar = findViewById(R.id.weather_criteria_bar)
         weatherCriteriaLabel = findViewById(R.id.weather_criteria_label)
         weatherCriteriaIcon = findViewById(R.id.weather_criteria_icon)
         val criteriaArray = intent.getStringArrayExtra("CURRENT_WEATHER_CRITERIA")
@@ -123,37 +126,42 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 criteriaArray[5],
                 criteriaArray[6],
                 criteriaArray[7])
-        setWeatherCriteriaIcon()
+        setWeatherCriteriaView()
         weatherCriteriaLabel.text = criteriaArray.joinToString(" ").replace("-", "").trim()
     }
 
-    private fun setWeatherCriteriaIcon() {
-        weatherCriteriaIcon.visibility = View.VISIBLE
-        when {
-            weatherCriteria.conditions == getString(R.string.sun) -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.sun_icon)
+    private fun setWeatherCriteriaView() {
+        weatherCriteriaBar.visibility = if (weatherTime == null) View.INVISIBLE else {
+            weatherCriteriaIcon.clearColorFilter()
+            when {
+                weatherCriteria.conditions == getString(R.string.sun) -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.sun_icon)
+                }
+                weatherCriteria.conditions == getString(R.string.cloud) -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.cloud_icon)
+                }
+                weatherCriteria.conditions == getString(R.string.rain) -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.rain_icon)
+                }
+                weatherCriteria.conditions == getString(R.string.snow) -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.snow_icon)
+                }
+                weatherCriteria.tempOperator == "Above" -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.temp_above_icon)
+                }
+                weatherCriteria.tempOperator == "Below" -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.temp_below_icon)
+                }
+                weatherCriteria.windOperator != "" -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.wind_icon)
+                }
+                else -> {
+                    weatherCriteriaIcon.setImageResource(R.drawable.ic_add_circle_outline_white_24px)
+                    weatherCriteriaIcon.setColorFilter(Color.parseColor("#66BB66"))
+                    weatherCriteriaLabel.text = "Select Criteria"
+                }
             }
-            weatherCriteria.conditions == getString(R.string.cloud) -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.cloud_icon)
-            }
-            weatherCriteria.conditions == getString(R.string.rain) -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.rain_icon)
-            }
-            weatherCriteria.conditions == getString(R.string.snow) -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.snow_icon)
-            }
-            weatherCriteria.tempOperator == "Above" -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.temp_above_icon)
-            }
-            weatherCriteria.tempOperator == "Below" -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.temp_below_icon)
-            }
-            weatherCriteria.windOperator != "" -> {
-                weatherCriteriaIcon.setImageResource(R.drawable.wind_icon)
-            }
-            else -> {
-                weatherCriteriaIcon.visibility = View.INVISIBLE
-            }
+            View.VISIBLE
         }
     }
 
@@ -224,16 +232,50 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     }
 
     fun onClickSetAlarmButton(v: View) {
-        setAlarmPair()
-        back()
-    }
+        if (defaultTime == null && weatherTime == null) {
+            val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertBuilder.setMessage("Choose a time for at least one alarm")
+                    .setPositiveButton("OK", { dialogInterface, i ->
 
-    private fun setAlarmPair() {
+                    })
+            alertBuilder.create().show()
+            return
+        }
+
         val currentAlarmPairID = intent.getIntExtra("ALARM_PAIR_ID", -1)
         val alarmPairID = if (currentAlarmPairID != -1) currentAlarmPairID
-                                else abs((Calendar.getInstance().timeInMillis).toInt())
+        else abs((Calendar.getInstance().timeInMillis).toInt())
         val defaultAlarm = configureDefaultAlarm(alarmPairID)
         val weatherAlarm = configureWeatherAlarm(alarmPairID)
+
+        if (weatherAlarm != null && weatherAlarm.getWeatherCriteriaAsStringArray().contentEquals(Array<String>(8, { it -> ""}))) {
+            val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertBuilder.setMessage("Choose WeatherAlarm Criteria, or use only the Default Alarm if you want this alarm to ring regardless of weather.")
+                    .setPositiveButton("OK", { dialogInterface, i ->
+
+                    })
+            alertBuilder.create().show()
+            return
+        }
+
+        if (defaultAlarm != null && weatherAlarm != null && defaultAlarm < weatherAlarm) {
+            val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertBuilder.setMessage("Default alarm time is sooner than WeatherAlarm time. Set default for a day later?")
+                    .setPositiveButton("Yes", { dialogInterface, i ->
+                        defaultAlarm.addADay()
+                        setAlarmPair(alarmPairID, defaultAlarm, weatherAlarm)
+                        back()
+                    }).setNegativeButton("Cancel", { dialogInterface, i ->
+                        return@setNegativeButton
+                    })
+            alertBuilder.create().show()
+        } else {
+            setAlarmPair(alarmPairID, defaultAlarm, weatherAlarm)
+            back()
+        }
+    }
+
+    private fun setAlarmPair(alarmPairID: Int, defaultAlarm: Alarm?, weatherAlarm: Alarm?) {
         val alarmPair = AlarmPair(alarmPairID, defaultAlarm, weatherAlarm, true, applicationContext)
         AlarmPairManager.getInstance(applicationContext).addAlarmPair(alarmPair)
         alarmPair.persist()
@@ -271,7 +313,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
 
     private fun configureWeatherAlarm(alarmPairID: Int): Alarm? {
         if (weatherTime == null) {
-            Log.e("setDefaultAlarm", "Default alarm time null")
+            Log.e("configureWeatherAlarm", "Weather alarm time null")
             return null
         }
         else {
@@ -331,10 +373,9 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                             } else {
                                 weatherTime = null
                                 weatherAlarmLabel.text = getString(R.string.none)
-                                weatherCriteriaIcon.visibility = View.INVISIBLE
                                 resetWeatherCriteria()
-                                weatherCriteriaLabel.text = ""
                             }
+                            setWeatherCriteriaView()
                         }
                     }
                 }
@@ -379,7 +420,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                         weatherCriteriaLabel.text = pickedCondition
                         resetWeatherCriteria()
                         weatherCriteria.conditions = pickedCondition
-                        setWeatherCriteriaIcon()
+                        setWeatherCriteriaView()
                     }
                 }
                 TEMP_PICKER_REQUEST_CODE -> {
@@ -393,7 +434,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                         weatherCriteria.tempOperator = pickedTemperature[0]
                         weatherCriteria.temp = pickedTemperature[1]
                         weatherCriteria.tempUnit = pickedTemperature[2].drop(1)
-                        setWeatherCriteriaIcon()
+                        setWeatherCriteriaView()
                     }
                 }
                 WIND_PICKER_REQUEST_CODE -> {
@@ -408,7 +449,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                         weatherCriteria.windSpeed = picked[1]
                         weatherCriteria.windUnit = picked[2]
                         weatherCriteria.windDirection = picked[3]
-                        setWeatherCriteriaIcon()
+                        setWeatherCriteriaView()
                     }
                 }
             }

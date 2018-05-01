@@ -20,16 +20,18 @@ class AlarmReceiver : BroadcastReceiver() {
 
             //val localAlarmManager = LocalAlarmManager.getInstance(context)
             //localAlarmManager.update(context)
-
+            val thisAlarmPair = alarmPairManager.getAlarmPairByID(alarmPairId)
             val thisAlarm = alarmPairManager.getAlarmPairByID(alarmPairId)?.getAlarmByType(alarmType) ?: return
 
-            if (thisAlarm.isActive()) {
+            if (thisAlarmPair != null && thisAlarmPair.isActive()) {
                 Log.i("AlarmReceiver", "Alarm in " + alarmPairId + " should ring")
                 val launchIntent = Intent(context, RingSliderActivity::class.java)
                 launchIntent.putExtra("ALARM_PAIR_ID", alarmPairId)
                 launchIntent.putExtra("ALARM_TYPE", alarmType)
                 launchIntent.flags = Intent.FLAG_ACTIVITY_MULTIPLE_TASK
                 startActivity(context, launchIntent, null)
+            } else {
+                Log.i("AlarmReceiver", "Alarm null or inactive")
             }
 
         }
