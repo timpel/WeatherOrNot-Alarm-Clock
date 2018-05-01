@@ -25,6 +25,12 @@ class AlarmPair(private val id: Int, private val defaultAlarm: Alarm?, private v
         persist()
     }
 
+    fun cancel() {
+        defaultAlarm?.cancel()
+        weatherAlarm?.cancel()
+        depersist()
+    }
+
     fun persist() {
         val gson = GsonBuilder().setPrettyPrinting().create()
         val fileObject = PersistentAlarmPairSettings(id, defaultAlarm?.getSettings(),

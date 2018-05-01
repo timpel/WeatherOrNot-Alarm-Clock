@@ -29,7 +29,7 @@ class LocalAlarmManager private constructor(context: Context) {
     fun numberOfAlarms(): Int {
         return alarms.size
     }
-
+/*
     fun update(context: Context) {
         val files =  context.filesDir.listFiles { dir, filename -> filename != "instant-run" }
         if (files.size != numberOfAlarms()) {
@@ -47,4 +47,5 @@ class LocalAlarmManager private constructor(context: Context) {
             }
         }
     }
+    */
 }

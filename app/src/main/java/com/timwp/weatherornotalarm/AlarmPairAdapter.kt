@@ -2,14 +2,13 @@ package com.timwp.weatherornotalarm
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.support.constraint.ConstraintLayout
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
@@ -98,10 +97,10 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         holder.activationSwitch.setOnCheckedChangeListener { compoundButton, b ->
             if (holder.activationSwitch.isChecked) thisAlarmPair.activate()
             else thisAlarmPair.deactivate()
-            setFontColors(holder, thisAlarmPair.isActive())
+            setColors(holder, thisAlarmPair.isActive())
             Log.e("Activation Switch onCheckedChange", "Alarm pair active = " + thisAlarmPair.isActive())
         }
-        setFontColors(holder, thisAlarmPair.isActive())
+        setColors(holder, thisAlarmPair.isActive())
 
         holder.settingsButton.setOnClickListener { it ->
             val launchIntent = Intent(holder.context, SetMultiAlarmActivity::class.java)
@@ -122,9 +121,15 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         }
     }
 
-    fun setFontColors(holder: ViewHolder, isActive: Boolean) {
-        if (isActive) holder.allLabels.forEach { it.setTextColor(holder.defaultColor) }
-        else holder.allLabels.forEach { it.setTextColor(Color.parseColor("#555555")) }
+    fun setColors(holder: ViewHolder, isActive: Boolean) {
+        if (isActive) {
+            holder.allLabels.forEach { it.setTextColor(holder.defaultColor) }
+            holder.weatherCriteriaIcon.clearColorFilter()
+        }
+        else {
+            holder.allLabels.forEach { it.setTextColor(Color.parseColor("#555555")) }
+            holder.weatherCriteriaIcon.setColorFilter(Color.DKGRAY)
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

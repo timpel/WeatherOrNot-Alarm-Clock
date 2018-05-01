@@ -72,7 +72,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
                 criteria.windUnit,
                 criteria.windDirection)
     }
-
+/*
     fun activate() {
         active = true
         persist()
@@ -82,7 +82,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         active = false
         persist()
     }
-
+*/
     fun isActive(): Boolean {
         return active
     }
@@ -112,7 +112,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         alarmIntent.action = "com.timwp.alarmtrigger"
         pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.cancel(pendingAlarmIntent)
-        depersist()
+        //depersist()
     }
     fun trigger() {
         if (matchesWeatherCriteria()) ring()
@@ -153,7 +153,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     fun addSnoozeTime(): Long {
         return Calendar.getInstance().timeInMillis + SNOOZE_TIME
     }
-
+/*
     private fun persist() {
         val gson = GsonBuilder().setPrettyPrinting().create()
         val fileObject = PersistentAlarmSettings(settings, active)
@@ -166,4 +166,5 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     private fun depersist() {
         context.deleteFile(settings.id.toString())
     }
+    */
 }

@@ -41,24 +41,33 @@
         <activity
             android:name=".RingSliderActivity"
             android:clearTaskOnLaunch="true" />
-        <activity android:name=".ConditionPickerActivity" />
+        <activity android:name=".ConditionPickerActivity"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".TemperaturePickerActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar" />
+            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".WindPickerActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar" />
-        <activity android:name=".RepeatPickerActivity" />
-        <activity android:name=".SetMultiAlarmActivity" />
+            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+        <activity android:name=".RepeatPickerActivity"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+        <activity android:name=".SetMultiAlarmActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:parentActivityName="com.timwp.weatherornotalarm.AlarmListActivity"/>
         <activity
             android:name=".SetSingleAlarmActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar" />
+            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".CriteriaPickerActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar" />
+            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity android:name=".TemperaturePickerComboActivity" />
         <activity android:name=".WindPickerComboActivity" />
-        <activity android:name=".AlarmListActivity"></activity>
+        <activity android:name=".AlarmListActivity"
+            ></activity>
     </application>
 
 </manifest>

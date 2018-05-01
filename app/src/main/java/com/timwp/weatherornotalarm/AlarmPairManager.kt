@@ -13,7 +13,11 @@ class AlarmPairManager private constructor(context: Context) {
     }
 
     fun removeAlarmPair(id: Int) {
-        alarmPairMap.remove(id)
+        val alarmPairToRemove = getAlarmPairByID(id)
+        if (alarmPairToRemove != null) {
+            alarmPairToRemove.cancel()
+            alarmPairMap.remove(id)
+        }
     }
 
     fun getAlarmPairByID(id: Int): AlarmPair? {

@@ -299,7 +299,12 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         startActivity(launchIntent)
     }
 
-    fun onClickCancelButton(v: View) {
+    fun onClickDeleteButton(v: View) {
+        val currentAlarmPairID = intent.getIntExtra("ALARM_PAIR_ID", -1)
+        if (currentAlarmPairID != -1) {
+            val alarmPairManager = AlarmPairManager.getInstance(applicationContext)
+            alarmPairManager.removeAlarmPair(currentAlarmPairID)
+        }
         back()
     }
 
