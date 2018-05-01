@@ -28,8 +28,8 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     private lateinit var weatherCriteriaLabel: TextView
     private var defaultTime: util.Companion.TimeObject? = null
     private var weatherTime: util.Companion.TimeObject? = null
-    private var defaultAlarm: Alarm? = null
     private lateinit var ringtonePath: Uri
+    private var defaultColor: Int = 0
 
     private lateinit var weatherCriteria: IWeatherCriteria
 
@@ -43,6 +43,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_multi_alarm)
+        defaultColor = findViewById<TextView>(R.id.default_alarm_label).currentTextColor
         initializeDefaultAlarm()
         initializeWeatherAlarm()
         initializeRepeatBar()
@@ -95,12 +96,17 @@ class SetMultiAlarmActivity : AppCompatActivity() {
 
         for ((index, value) in currentRepeats.withIndex()) {
             boxArray[index].isChecked = value
-            boxArray[index].setTextColor(Color.DKGRAY)
+            boxArray[index].setTextColor(if (value) defaultColor else Color.DKGRAY)
         }
     }
 
     private fun initializeToneBar() {
-        ringtonePath = intent.getParcelableExtra("CURRENT_RINGTONE") ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val currentRingtone = intent.getStringExtra("CURRENT_RINGTONE")
+        ringtonePath = if (currentRingtone == null) {
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        } else {
+            Uri.parse(currentRingtone)
+        }
         toneLabel = findViewById(R.id.tone_label)
         toneLabel.text = RingtoneManager.getRingtone(this, ringtonePath).getTitle(this)
     }
@@ -118,6 +124,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 criteriaArray[6],
                 criteriaArray[7])
         setWeatherCriteriaIcon()
+        weatherCriteriaLabel.text = criteriaArray.joinToString(" ").replace("-", "").trim()
     }
 
     private fun setWeatherCriteriaIcon() {
@@ -217,35 +224,38 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     }
 
     fun onClickSetAlarmButton(v: View) {
-        setDefaultAlarm()
-        setWeatherAlarm()
+        setAlarmPair()
         back()
     }
 
-    private fun setCalendar(time: util.Companion.TimeObject): Calendar {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, time.hour)
-        calendar.set(Calendar.MINUTE, time.minute)
-        var second: Int = Calendar.getInstance().get(Calendar.SECOND) + 3
-        if (second > 59) {
-            second %= 60
-            calendar.set(Calendar.MINUTE, timepicker.minute + 1)
-            calendar.set(Calendar.SECOND, second)
-        }
-        return calendar
+    private fun setAlarmPair() {
+        val currentAlarmPairID = intent.getIntExtra("ALARM_PAIR_ID", -1)
+        val alarmPairID = if (currentAlarmPairID != -1) currentAlarmPairID
+                                else abs((Calendar.getInstance().timeInMillis).toInt())
+        val defaultAlarm = configureDefaultAlarm(alarmPairID)
+        val weatherAlarm = configureWeatherAlarm(alarmPairID)
+        val alarmPair = AlarmPair(alarmPairID, defaultAlarm, weatherAlarm, true, applicationContext)
+        AlarmPairManager.getInstance(applicationContext).addAlarmPair(alarmPair)
+        alarmPair.persist()
+        defaultAlarm?.set()
+        weatherAlarm?.set()
     }
 
     private fun repeatDays(): BooleanArray {
         return boxArray.map { it -> it.isChecked }.toBooleanArray()
     }
 
-    private fun setDefaultAlarm() {
-        if (defaultTime == null) Log.e("setDefaultAlarm", "Default alarm time null")
+    private fun configureDefaultAlarm(alarmPairID: Int): Alarm? {
+        if (defaultTime == null) {
+            Log.e("setDefaultAlarm", "Default alarm time null")
+            return null
+        }
         else {
-            val calendar = setCalendar(defaultTime!!)
+            val calendar = util.setCalendar(defaultTime!!)
             val alarmSettings = IAlarmSettings(
                     Alarm.ALARM_TYPE_DEFAULT,
                     abs((Calendar.getInstance().timeInMillis).toInt()),
+                    alarmPairID,
                     calendar.timeInMillis,
                     defaultTime!!.hour,
                     defaultTime!!.minute,
@@ -255,20 +265,22 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                     repeatDays(),
                     ringtonePath.toString()
             )
-
-            defaultAlarm = Alarm(alarmSettings, this)
-            defaultAlarm!!.set()
+            return Alarm(alarmSettings, this)
         }
     }
 
-    private fun setWeatherAlarm() {
-        if (weatherTime == null) Log.e("setDefaultAlarm", "Default alarm time null")
+    private fun configureWeatherAlarm(alarmPairID: Int): Alarm? {
+        if (weatherTime == null) {
+            Log.e("setDefaultAlarm", "Default alarm time null")
+            return null
+        }
         else {
-            val id = if (defaultAlarm != null) defaultAlarm!!.getID() - 1 else abs((Calendar.getInstance().timeInMillis).toInt())
-            val calendar = setCalendar(weatherTime!!)
+            val id = abs((Calendar.getInstance().timeInMillis).toInt()) + 1
+            val calendar = util.setCalendar(weatherTime!!)
             val alarmSettings = IAlarmSettings(
                     Alarm.ALARM_TYPE_WEATHER,
                     id,
+                    alarmPairID,
                     calendar.timeInMillis,
                     weatherTime!!.hour,
                     weatherTime!!.minute,
@@ -278,9 +290,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                     repeatDays(),
                     ringtonePath.toString()
             )
-
-            val weatherAlarm = Alarm(alarmSettings, this)
-            weatherAlarm.set()
+            return Alarm(alarmSettings, this)
         }
     }
 

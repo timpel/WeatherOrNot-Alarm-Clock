@@ -35,6 +35,10 @@ class RingFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         // Get alarm info
+        val alarmPairID = activity.intent.getIntExtra("ALARM_PAIR_ID", -1)
+        val alarmType = activity.intent.getIntExtra("ALARM_TYPE", -1)
+
+        /*
         val alarmID = activity.intent.getIntExtra("ALARM_ID", -1)
         if (alarmID == -1) {
             Log.e("RingSlider", "Couldn't get alarm ID from intent")
@@ -42,17 +46,23 @@ class RingFragment: Fragment() {
         }
         val localAlarmManager = LocalAlarmManager.getInstance(activity.applicationContext)
         localAlarmManager.update(activity.applicationContext)
-        thisAlarm = localAlarmManager.getAlarmByID(alarmID)
+        */
+
+        val alarmPairManager = AlarmPairManager.getInstance(context)
+        alarmPairManager.update(context)
+
+        thisAlarm = alarmPairManager.getAlarmPairByID(alarmPairID)?.getAlarmByType(alarmType)
         if (thisAlarm == null) {
-            Log.e("RingSlider", "Alarm not in local alarm manager")
+            Log.e("RingSlider", "Alarm not in alarm pair manager")
             return
         }
-        thisAlarm!!.ring()
+        thisAlarm?.ring()
     }
 
     override fun onPause() {
         super.onPause()
-        thisAlarm!!.stop()
-        if (snoozeIt) thisAlarm!!.snooze()
+        thisAlarm?.stop()
+        if (snoozeIt) thisAlarm?.snooze()
+        else thisAlarm?.setForTomorrow()
     }
 }

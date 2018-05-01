@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/no_weather_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="No WeatherAlarm"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/weather_time_label"
+        app:layout_constraintStart_toEndOf="@+id/activation_switch"
+        app:layout_constraintTop_toTopOf="@+id/weather_time_label" />
+
+    <TextView
+        android:id="@+id/default_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="Default"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/default_time_label"
+        app:layout_constraintStart_toEndOf="@+id/default_time_label" />
+
+    <TextView
+        android:id="@+id/default_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="7:30 AM"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/weather_time_label"
+        app:layout_constraintStart_toStartOf="@+id/no_weather_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/weather_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="7:00 AM"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/activation_switch"
+        app:layout_constraintStart_toEndOf="@+id/activation_switch"
+        app:layout_constraintTop_toTopOf="@+id/activation_switch" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/weather_criteria_container"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/weather_time_label"
+        app:layout_constraintStart_toEndOf="@+id/weather_time_label"
+        app:layout_constraintTop_toTopOf="@+id/weather_time_label">
+
+        <ImageView
+            android:id="@+id/weather_criteria_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/wind_icon" />
+
+        <TextView
+            android:id="@+id/weather_criteria_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"
+            android:text="Cloudy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/weather_criteria_icon" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/repeat_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="M, TU, W, TH"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/no_weather_label"
+        app:layout_constraintTop_toBottomOf="@+id/weather_time_label" />
+
+    <Switch
+        android:id="@+id/activation_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_settings_white_24px" />
+
+    <TextView
+        android:id="@+id/no_default_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="No Default Alarm"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/default_time_label"
+        app:layout_constraintStart_toEndOf="@+id/activation_switch"
+        app:layout_constraintTop_toTopOf="@+id/default_time_label" />
+
+</android.support.constraint.ConstraintLayout>

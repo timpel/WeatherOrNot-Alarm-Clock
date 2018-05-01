@@ -80,6 +80,7 @@ class SetAlarmActivity : AppCompatActivity() {
         val alarmSettings = IAlarmSettings(
                 Alarm.ALARM_TYPE_DEFAULT,
                 abs((Calendar.getInstance().timeInMillis).toInt()),
+                0,
                 calendar.timeInMillis,
                 timepicker.hour,
                 timepicker.minute,

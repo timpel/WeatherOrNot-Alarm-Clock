@@ -21,10 +21,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        /*
         val alarmList: ListView = this.findViewById(R.id.alarmList)
         alarmList.adapter = AlarmListAdapter(this)
         localAlarmManager = LocalAlarmManager.getInstance(this)
         localAlarmManager.update(this)
+        */
+        val launchIntent = Intent(applicationContext, AlarmListActivity::class.java)
+        startActivity(launchIntent)
     }
 
     fun addAlarm(view: View) {

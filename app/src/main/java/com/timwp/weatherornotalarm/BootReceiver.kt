@@ -23,19 +23,48 @@ class BootReceiver: BroadcastReceiver() {
             val gson = Gson()
             files.forEach {
                 try {
+                    val persistedAlarmPairSettings = gson.fromJson(it.readText(), PersistentAlarmPairSettings::class.java)
+                    val updatedSettings = updateSettings(persistedAlarmPairSettings)
+                    /*
                     var persistedAlarm = gson.fromJson(it.readText(), PersistentAlarmSettings::class.java)
                     persistedAlarm.settings.time = updateAlarmTime(persistedAlarm.settings.time,
                             persistedAlarm.settings.hour,
                             persistedAlarm.settings.minute)
                     val alarm = Alarm(persistedAlarm.settings, context)
-                    if (!persistedAlarm.active) alarm.deactivate()
-                    alarm.set()
-                    Log.i("BootReceiver", "Alarm " + alarm.getID() + " set")
+                    */
+                    val defaultAlarm = if (updatedSettings.defaultAlarmSettings != null) {
+                        Alarm(updatedSettings.defaultAlarmSettings, context)
+                    } else null
+                    val weatherAlarm = if (updatedSettings.weatherAlarmSettings != null) {
+                        Alarm(updatedSettings.weatherAlarmSettings, context)
+                    } else null
+
+                    val alarmPair = AlarmPair(updatedSettings.id, defaultAlarm, weatherAlarm,
+                            updatedSettings.active, context)
+                    AlarmPairManager.getInstance(context).addAlarmPair(alarmPair)
+                    alarmPair.persist()
+                    defaultAlarm?.set()
+                    weatherAlarm?.set()
+                    Log.i("BootReceiver", "Alarm Pair " + alarmPair.getID() + " set")
                 } catch(err: Error) {
                     Log.e("BootReceiver", "Could not read file as alarm")
                 }
             }
         }
+    }
+    fun updateSettings(oldSettings: PersistentAlarmPairSettings): PersistentAlarmPairSettings {
+        val newSettings = oldSettings
+        if (newSettings.defaultAlarmSettings != null) {
+            newSettings.defaultAlarmSettings.time = updateAlarmTime(newSettings.defaultAlarmSettings.time,
+                    newSettings.defaultAlarmSettings.hour,
+                    newSettings.defaultAlarmSettings.minute)
+        }
+        if (newSettings.weatherAlarmSettings != null) {
+            newSettings.weatherAlarmSettings.time = updateAlarmTime(newSettings.weatherAlarmSettings.time,
+                    newSettings.weatherAlarmSettings.hour,
+                    newSettings.weatherAlarmSettings.minute)
+        }
+        return newSettings
     }
     fun updateAlarmTime(oldTime: Long, hour: Int, minute: Int): Long {
         Log.i("updateAlarmTime", "Old time: " + oldTime)

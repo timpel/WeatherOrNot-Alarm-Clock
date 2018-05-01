@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
@@ -43,12 +44,33 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     lateinit var ringtone: Ringtone
     private var repeat: BooleanArray = settings.repeat
 
+    fun getSettings(): IAlarmSettings {
+        return settings
+    }
+
     fun getID(): Int {
         return alarmID
     }
 
     fun getAlarmTime(): Long {
         return alarmTime
+    }
+
+    fun getWeatherCriteria(): IWeatherCriteria {
+        return settings.criteria
+    }
+
+    fun getWeatherCriteriaAsStringArray(): Array<String> {
+        val criteria = settings.criteria
+        return arrayOf(
+                criteria.conditions,
+                criteria.tempOperator,
+                criteria.temp,
+                criteria.tempUnit,
+                criteria.windOperator,
+                criteria.windSpeed,
+                criteria.windUnit,
+                criteria.windDirection)
     }
 
     fun activate() {
@@ -67,11 +89,17 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
 
     fun set() {
         alarmIntent.action = "com.timwp.alarmtrigger"
-        alarmIntent.putExtra("ALARM_ID", alarmID)
+        alarmIntent.putExtra("ALARM_TYPE", settings.type)
+        alarmIntent.putExtra("ALARM_PAIR_ID", settings.pairID)
         pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingAlarmIntent)
-        localAlarmManager.addAlarm(this)
-        persist()
+
+        val testCalendar = Calendar.getInstance()
+        testCalendar.timeInMillis = alarmTime
+        Log.e("Alarm set()", "Alarm set for " + testCalendar.get(Calendar.HOUR_OF_DAY) + ":" + testCalendar.get(Calendar.MINUTE)
+                + ", " + testCalendar.get(Calendar.DAY_OF_YEAR))
+        //localAlarmManager.addAlarm(this)
+        //persist()
     }
     fun edit(settings: IAlarmSettings, con: Context) {
         cancel()
@@ -94,7 +122,8 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     fun snooze() {
         ringing = false
         alarmIntent.action = "com.timwp.alarmtrigger"
-        alarmIntent.putExtra("ALARM_ID", alarmID)
+        alarmIntent.putExtra("ALARM_TYPE", settings.type)
+        alarmIntent.putExtra("ALARM_PAIR_ID", settings.pairID)
         pendingAlarmIntent = PendingIntent.getBroadcast(context, alarmID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.setExact(AlarmManager.RTC_WAKEUP, addSnoozeTime(), pendingAlarmIntent)
     }
@@ -105,6 +134,18 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     fun ring() {
         ringtone = RingtoneManager.getRingtone(context, ringtoneURI)
         ringtone.play()
+    }
+    fun setForTomorrow() {
+        val oldTime = Calendar.getInstance()
+        oldTime.timeInMillis = settings.time
+        Log.e("setForTomorrow", "Old alarm time: " + oldTime.get(Calendar.HOUR_OF_DAY) + ":" + oldTime.get(Calendar.MINUTE)
+                + ", " + oldTime.get(Calendar.DAY_OF_YEAR))
+        val newAlarmTime = util.setCalendar(util.Companion.TimeObject(settings.hour, settings.minute))
+        settings.time = newAlarmTime.timeInMillis
+        val testTime = Calendar.getInstance()
+        testTime.timeInMillis = settings.time
+        Log.e("setForTomorrow", "New alarm time: " + testTime.get(Calendar.HOUR_OF_DAY) + ":" + testTime.get(Calendar.MINUTE)
+            + ", " + testTime.get(Calendar.DAY_OF_YEAR))
     }
     fun matchesWeatherCriteria(): Boolean {
         return false

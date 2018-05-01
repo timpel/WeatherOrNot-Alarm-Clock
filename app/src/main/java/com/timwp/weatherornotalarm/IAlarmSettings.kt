@@ -8,6 +8,7 @@ import java.util.*
 data class IAlarmSettings(
     var type: Int,
     var id: Int,
+    var pairID: Int,
     var time: Long,
     var hour: Int,
     var minute: Int,
