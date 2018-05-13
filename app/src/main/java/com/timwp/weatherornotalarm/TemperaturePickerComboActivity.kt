@@ -147,8 +147,8 @@ class TemperaturePickerComboActivity : AppCompatActivity() {
 
     private fun hideTempPickers() {
         // get the center for the clipping circle
-        val cx = tempPickers.getWidth() / 2
-        val cy = tempPickers.getHeight() / 2
+        val cx = tempPickers.width / 2
+        val cy = tempPickers.height / 2
 
         // get the initial radius for the clipping circle
         val initialRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()

@@ -1,7 +1,6 @@
 package com.timwp.weatherornotalarm
 
 import android.app.ListActivity
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -16,7 +15,7 @@ class ConditionPickerActivity : ListActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_condition_picker)
-        val conditionOptions = arrayOf(getString(R.string.sun), getString(R.string.cloud),
+        val conditionOptions = arrayOf(getString(R.string.clear), getString(R.string.cloud),
                 getString(R.string.rain), getString(R.string.snow))
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, conditionOptions)
         listAdapter = adapter

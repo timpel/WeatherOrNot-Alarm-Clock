@@ -158,8 +158,8 @@ class WindPickerComboActivity : AppCompatActivity() {
 
     private fun hidePickers() {
         // get the center for the clipping circle
-        val cx = windPickers.getWidth() / 2
-        val cy = windPickers.getHeight() / 2
+        val cx = windPickers.width / 2
+        val cy = windPickers.height / 2
 
         // get the initial radius for the clipping circle
         val initialRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()

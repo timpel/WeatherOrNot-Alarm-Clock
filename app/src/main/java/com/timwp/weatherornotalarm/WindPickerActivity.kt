@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
+import android.util.Log
 import android.view.View
 import android.widget.NumberPicker
 
@@ -100,9 +101,10 @@ class WindPickerActivity : AppCompatActivity() {
         windPickers.visibility = View.VISIBLE
 
         if (currentWindPicks != null) {
+            Log.e("windPicker", "" + currentWindPicks[0] + " " + currentWindPicks[1] + " " + currentWindPicks[2] + " " + currentWindPicks[3])
             windOpPicker.value = if (currentWindPicks[0] == "Above") 0 else 1
             windNumPicker.value = (currentWindPicks[1].toInt() - WIND_MIN) / WIND_STEP
-            windUnitPicker.value = if (currentWindPicks[2] == "C") 0 else 1
+            windUnitPicker.value = if (currentWindPicks[2] == getString(R.string.km)) 0 else 1
             windDirectionPicker.value = WIND_DIRECTIONS.indexOf(currentWindPicks[3])
         }
     }

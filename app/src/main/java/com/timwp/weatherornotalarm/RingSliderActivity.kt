@@ -1,8 +1,8 @@
 package com.timwp.weatherornotalarm
 
 import android.content.Intent
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle

@@ -65,16 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/default_bar">
 
-        <TextView
-            android:id="@+id/repeat_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Repeat"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <View
             android:id="@+id/divider2"
             android:layout_width="0dp"
@@ -85,151 +75,182 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/day_layout"
-            android:layout_width="0dp"
+            android:id="@+id/repeat_centering_constraint"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/repeat_title">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <CheckedTextView
-                android:id="@+id/sunday"
+            <TextView
+                android:id="@+id/repeat_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:text=" SU "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/monday"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginStart="8dp"
+                android:text="Repeat"
+                app:layout_constraintBottom_toBottomOf="@+id/repeat_switch"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/repeat_switch" />
 
-            <CheckedTextView
-                android:id="@+id/monday"
+            <Switch
+                android:id="@+id/repeat_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" M "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tuesday"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/sunday"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@+id/repeat_title"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckedTextView
-                android:id="@+id/tuesday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" TU "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/wednesday"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/monday"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckedTextView
-                android:id="@+id/wednesday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" W "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/thursday"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tuesday"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckedTextView
-                android:id="@+id/thursday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" TH "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/friday"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/wednesday"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckedTextView
-                android:id="@+id/friday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" F "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/saturday"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/thursday"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckedTextView
-                android:id="@+id/saturday"
-                android:layout_width="wrap_content"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/day_layout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:text=" SA "
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:onClick="onClickDayCheckedText"
-                android:checked="false"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/friday"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repeat_title">
+
+                <CheckedTextView
+                    android:id="@+id/sunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" SU "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/monday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/monday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" M "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tuesday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/sunday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/tuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" TU "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/wednesday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/monday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/wednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" W "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/thursday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tuesday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/thursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" TH "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/friday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/wednesday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/friday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" F "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/saturday"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/thursday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckedTextView
+                    android:id="@+id/saturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:checked="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onClickDayCheckedText"
+                    android:text=" SA "
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/friday"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
 

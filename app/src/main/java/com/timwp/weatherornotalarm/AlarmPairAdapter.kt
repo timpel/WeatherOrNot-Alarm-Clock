@@ -53,7 +53,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
             val criteriaString = criteriaStringArray.joinToString(" ").replace("-", "").trim()
 
             when {
-                weatherCriteria.conditions == "Sunny" -> {
+                weatherCriteria.conditions == "Clear" -> {
                     holder.weatherCriteriaIcon.setImageResource(R.drawable.sun_icon)
                 }
                 weatherCriteria.conditions == "Cloudy" -> {
@@ -87,7 +87,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
             holder.weatherCriteriaContainer.visibility = View.INVISIBLE
         }
 
-        val nonNullAlarm: Alarm = defaultAlarm ?: weatherAlarm!!
+        val nonNullAlarm: Alarm = thisAlarmPair.getNonNullAlarm()
         val dayArray = util.toDayArray(nonNullAlarm.getSettings().repeat)
         val dayString = if (dayArray.isNotEmpty()) dayArray.joinToString(", ") else "Non-repeating"
         holder.repeatLabel.text = dayString
@@ -96,9 +96,12 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
 
         holder.activationSwitch.setOnCheckedChangeListener { compoundButton, b ->
             if (holder.activationSwitch.isChecked) thisAlarmPair.activate()
-            else thisAlarmPair.deactivate()
+            else {
+                thisAlarmPair.deactivate()
+                thisAlarmPair.cancelSnooze()
+            }
             setColors(holder, thisAlarmPair.isActive())
-            Log.e("Activation Switch onCheckedChange", "Alarm pair active = " + thisAlarmPair.isActive())
+            Log.e("activationSwitch", "Alarm pair active = " + thisAlarmPair.isActive())
         }
         setColors(holder, thisAlarmPair.isActive())
 

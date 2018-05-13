@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import com.timwp.weatherornotalarm.util.Companion.timeString
 import java.util.*
@@ -24,6 +25,8 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     private lateinit var defaultAlarmLabel: TextView
     private lateinit var weatherAlarmLabel: TextView
     private lateinit var toneLabel: TextView
+    private lateinit var repeatDayLayout: ConstraintLayout
+    private lateinit var repeatSwitch: Switch
     private lateinit var boxArray: Array<CheckedTextView>
     private lateinit var weatherCriteriaIcon: ImageView
     private lateinit var weatherCriteriaLabel: TextView
@@ -41,6 +44,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     private val CONDITION_PICKER_REQUEST_CODE = 3
     private val TEMP_PICKER_REQUEST_CODE = 4
     private val WIND_PICKER_REQUEST_CODE = 5
+    private val NO_REPEAT_ARRAY = BooleanArray(7, {false})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +91,10 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     }
 
     private fun initializeRepeatBar() {
+        repeatDayLayout = findViewById(R.id.day_layout)
+        repeatSwitch = findViewById(R.id.repeat_switch)
         val currentRepeats = intent.getBooleanArrayExtra("CURRENT_REPEATS")
+        repeatSwitch.isChecked = currentRepeats.contains(true)
         boxArray = arrayOf(findViewById(R.id.sunday),
                 findViewById(R.id.monday),
                 findViewById(R.id.tuesday),
@@ -100,6 +107,19 @@ class SetMultiAlarmActivity : AppCompatActivity() {
             boxArray[index].isChecked = value
             boxArray[index].setTextColor(if (value) defaultColor else Color.DKGRAY)
         }
+
+        repeatSwitch.setOnCheckedChangeListener { compoundButton, b ->
+            val checked = repeatSwitch.isChecked
+            repeatDayLayout.visibility = if (checked) View.VISIBLE else View.GONE
+            if (!boxArray.map {it -> it.isChecked}.contains(true)) {
+                for ((index, value) in currentRepeats.withIndex()) {
+                    boxArray[index].isChecked = checked
+                    boxArray[index].setTextColor(if (checked) defaultColor else Color.DKGRAY)
+                }
+            }
+            Log.e("repeatSwitch", "Repeats switched " + if (checked) "on" else "off")
+        }
+        repeatDayLayout.visibility = if (repeatSwitch.isChecked) View.VISIBLE else View.GONE
     }
 
     private fun initializeToneBar() {
@@ -134,7 +154,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         weatherCriteriaBar.visibility = if (weatherTime == null) View.INVISIBLE else {
             weatherCriteriaIcon.clearColorFilter()
             when {
-                weatherCriteria.conditions == getString(R.string.sun) -> {
+                weatherCriteria.conditions == getString(R.string.clear) -> {
                     weatherCriteriaIcon.setImageResource(R.drawable.sun_icon)
                 }
                 weatherCriteria.conditions == getString(R.string.cloud) -> {
@@ -167,6 +187,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
 
     fun onClickDayCheckedText(v: View) {
         val checkedText = v as CheckedTextView
+        val onlyOneChecked = !boxArray.map {it -> it.isChecked}.contains(true)
         checkedText.isChecked = !checkedText.isChecked
         when (checkedText.isChecked) {
             true -> {
@@ -175,6 +196,13 @@ class SetMultiAlarmActivity : AppCompatActivity() {
             else -> {
                 checkedText.setTextColor(Color.DKGRAY)
             }
+        }
+        if (!boxArray.map {it -> it.isChecked}.contains(true)) {
+            repeatSwitch.isChecked = false
+            repeatDayLayout.visibility = View.VISIBLE
+        }
+        else if (onlyOneChecked) {
+            repeatSwitch.isChecked = true
         }
     }
 
@@ -284,7 +312,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     }
 
     private fun repeatDays(): BooleanArray {
-        return boxArray.map { it -> it.isChecked }.toBooleanArray()
+        return if (repeatSwitch.isChecked) boxArray.map { it -> it.isChecked }.toBooleanArray() else NO_REPEAT_ARRAY
     }
 
     private fun configureDefaultAlarm(alarmPairID: Int): Alarm? {
@@ -415,7 +443,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 }
                 CONDITION_PICKER_REQUEST_CODE -> {
                     val pickedCondition = data.getStringExtra("PICKED_CONDITION")
-                    if (pickedCondition == null) Log.e("SetAlarmAcitivity: OnActivityResult", "Null response data from ConditionPickerActivity")
+                    if (pickedCondition == null) Log.e("OnActivityResult", "Null response data from ConditionPickerActivity")
                     else {
                         weatherCriteriaLabel.text = pickedCondition
                         resetWeatherCriteria()
@@ -426,7 +454,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 TEMP_PICKER_REQUEST_CODE -> {
                     val pickedTemperature = data.getStringArrayExtra("PICKED_TEMPERATURE")
                     if (pickedTemperature == null) {
-                        Log.e("SetAlarmAcitivity: OnActivityResult", "Null response data from TemperaturePickerActivity")
+                        Log.e("OnActivityResult", "Null response data from TemperaturePickerActivity")
                     } else {
                         val displayString = pickedTemperature.joinToString(" ")
                         weatherCriteriaLabel.text = displayString
@@ -440,7 +468,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 WIND_PICKER_REQUEST_CODE -> {
                     val picked = data.getStringArrayExtra("PICKED_WIND")
                     if (picked == null) {
-                        Log.e("SetAlarmAcitivity: OnActivityResult", "Null response data from TemperaturePickerActivity")
+                        Log.e("OnActivityResult", "Null response data from TemperaturePickerActivity")
                     } else {
                         val displayString = picked.joinToString(" ").replace("-", "")
                         weatherCriteriaLabel.text = displayString

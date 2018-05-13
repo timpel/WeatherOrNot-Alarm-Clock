@@ -9,10 +9,9 @@ import android.view.ViewGroup
 
 class BlankFragment: Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        return inflater!!.inflate(
+        return inflater.inflate(
                 R.layout.fragment_blank, container, false) as ViewGroup
     }
 }

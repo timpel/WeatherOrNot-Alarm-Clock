@@ -15,17 +15,16 @@ class RingFragment: Fragment() {
     private var thisAlarm: Alarm? = null
     private var snoozeIt = true
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view: ViewGroup = inflater!!.inflate(
+        val view: ViewGroup = inflater.inflate(
                 R.layout.fragment_ring, container, false) as ViewGroup
 
         val stopButton = view.findViewById(R.id.stop_ring) as Button
 
         stopButton.setOnClickListener {
             snoozeIt = false
-            val launchIntent = Intent(activity.applicationContext, MainActivity::class.java)
+            val launchIntent = Intent(activity?.applicationContext, MainActivity::class.java)
             startActivity(launchIntent)
         }
 
@@ -35,8 +34,8 @@ class RingFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         // Get alarm info
-        val alarmPairID = activity.intent.getIntExtra("ALARM_PAIR_ID", -1)
-        val alarmType = activity.intent.getIntExtra("ALARM_TYPE", -1)
+        val alarmPairID = activity?.intent?.getIntExtra("ALARM_PAIR_ID", -1)
+        val alarmType = activity?.intent?.getIntExtra("ALARM_TYPE", -1)
 
         /*
         val alarmID = activity.intent.getIntExtra("ALARM_ID", -1)
@@ -47,16 +46,17 @@ class RingFragment: Fragment() {
         val localAlarmManager = LocalAlarmManager.getInstance(activity.applicationContext)
         localAlarmManager.update(activity.applicationContext)
         */
+        if (context != null) {
+            val alarmPairManager = AlarmPairManager.getInstance(context!!)
+            alarmPairManager.update(context!!)
 
-        val alarmPairManager = AlarmPairManager.getInstance(context)
-        alarmPairManager.update(context)
-
-        thisAlarm = alarmPairManager.getAlarmPairByID(alarmPairID)?.getAlarmByType(alarmType)
-        if (thisAlarm == null) {
-            Log.e("RingSlider", "Alarm not in alarm pair manager")
-            return
+            thisAlarm = alarmPairManager.getAlarmPairByID(alarmPairID!!)?.getAlarmByType(alarmType!!)
+            if (thisAlarm == null) {
+                Log.e("RingSlider", "Alarm not in alarm pair manager")
+                return
+            }
+            thisAlarm?.ring()
         }
-        thisAlarm?.ring()
     }
 
     override fun onPause() {

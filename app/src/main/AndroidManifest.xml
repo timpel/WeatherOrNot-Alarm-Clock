@@ -3,6 +3,16 @@
     package="com.timwp.weatherornotalarm">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -40,34 +50,39 @@
         <activity android:name=".SetAlarmActivity" />
         <activity
             android:name=".RingSliderActivity"
+            android:screenOrientation="portrait"
             android:clearTaskOnLaunch="true" />
         <activity android:name=".ConditionPickerActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".TemperaturePickerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Dialog.NoActionBar"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".WindPickerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Dialog.NoActionBar"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity android:name=".RepeatPickerActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity android:name=".SetMultiAlarmActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
             android:parentActivityName="com.timwp.weatherornotalarm.AlarmListActivity"/>
         <activity
             android:name=".SetSingleAlarmActivity"
             android:theme="@style/Theme.Dialog.NoActionBar"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
         <activity
             android:name=".CriteriaPickerActivity"
             android:theme="@style/Theme.Dialog.NoActionBar"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
-        <activity android:name=".TemperaturePickerComboActivity" />
-        <activity android:name=".WindPickerComboActivity" />
-        <activity android:name=".AlarmListActivity"
-            ></activity>
+        <activity android:name=".AlarmListActivity" />
     </application>
 
 </manifest>

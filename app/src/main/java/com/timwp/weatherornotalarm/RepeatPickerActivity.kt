@@ -113,8 +113,8 @@ class RepeatPickerActivity : AppCompatActivity() {
 
     private fun hidePickers() {
         // get the center for the clipping circle
-        val cx = boxLayout.getWidth() / 2
-        val cy = boxLayout.getHeight() / 2
+        val cx = boxLayout.width / 2
+        val cy = boxLayout.height / 2
 
         // get the initial radius for the clipping circle
         val initialRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()

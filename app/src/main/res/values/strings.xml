@@ -85,12 +85,14 @@
     <string name="conditions">Conditions</string>
     <string name="temperature">Temperature</string>
     <string name="wind">Wind</string>
-    <string name="sun">Sunny</string>
+    <string name="clear">Clear</string>
     <string name="cloud">Cloudy</string>
     <string name="rain">Raining</string>
     <string name="snow">Snowing</string>
-    <string name="temp_above">Temp (Above)</string>
-    <string name="temp_below">Temp (Below)</string>
+    <string name="temp_above">Above</string>
+    <string name="temp_below">Below</string>
+    <string name="wind_above">Above</string>
+    <string name="wind_below">Below</string>
 
     <!-- Labels -->
     <string name="no_default">No Default Alarm</string>

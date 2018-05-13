@@ -2,6 +2,8 @@ package com.timwp.weatherornotalarm
 
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
+import android.location.LocationManager
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.View
@@ -10,9 +12,11 @@ import kotlin.collections.ArrayList
 
 class util {
     companion object {
+        private const val KM_PER_MILE = 0.621371.toFloat()
+
         fun timeString(timeInMillis: Long): SpannableString {
             val cal = Calendar.getInstance()
-            cal.setTimeInMillis(timeInMillis)
+            cal.timeInMillis = timeInMillis
             val hour = cal.get(Calendar.HOUR)
             val hourString = if (hour == 0) "12" else "$hour"
             val minute = cal.get(Calendar.MINUTE)
@@ -64,6 +68,28 @@ class util {
             }
 
             return alarmCalendar
+        }
+        fun getLastKnownLocation(appContext: Context): Location? {
+            val mLocationManager = appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val providers = mLocationManager.getProviders(true)
+            var bestLocation: Location? = null
+            for (provider in providers) {
+                try {
+                    val l = mLocationManager.getLastKnownLocation(provider) ?: continue
+                    if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
+                        bestLocation = l
+                    }
+                } catch (ex: SecurityException) {
+                    bestLocation = null
+                }
+            }
+            return bestLocation
+        }
+        fun celsiusToFahrenheit(tempInCelsius: Int): Float {
+            return (tempInCelsius.toFloat() * 1.8f) + 32f
+        }
+        fun kmToMph(speedInKm: Int): Float {
+            return speedInKm.toFloat() * KM_PER_MILE
         }
         data class TimeObject(
                 val hour: Int,
