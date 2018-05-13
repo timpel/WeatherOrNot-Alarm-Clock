@@ -64,7 +64,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     private fun currentLocation(context: Context): Location? {
         return try {
-            val lastKnownLocation = util.getLastKnownLocation(context)
+            val lastKnownLocation = Util.getLastKnownLocation(context)
             Log.e("Last Location", "" + lastKnownLocation?.longitude + ":" + lastKnownLocation?.latitude)
             lastKnownLocation
         } catch (ex: SecurityException) {
@@ -76,8 +76,9 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun ringIfWeatherCriteriaMatch(context: Context, alarmPairId: Int, loc: Location) {
         val lat = loc.latitude
         val lon = loc.longitude
+        val urlBase = context.getString(R.string.endpt)
 
-        val url = "https://whispering-inlet-50260.herokuapp.com/weatherornot/$lat,$lon"
+        val url = "$urlBase/$lat,$lon"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
 
@@ -94,7 +95,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     Log.e("AlarmReceiver", "Alarm Pair null")
                     return
                 }
-                val thisAlarm = thisAlarmPair?.getWeatherAlarm()
+                val thisAlarm = thisAlarmPair.getWeatherAlarm()
                 if (body == null) {
                     Log.e("AlarmReceiver", "Null response body from weather service")
                     thisAlarmPair.moveWeatherToTomorrow()

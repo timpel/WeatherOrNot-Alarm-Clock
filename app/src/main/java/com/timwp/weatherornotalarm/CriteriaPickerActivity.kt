@@ -2,14 +2,13 @@ package com.timwp.weatherornotalarm
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 
 class CriteriaPickerActivity : AppCompatActivity() {
 
-    lateinit var returnIntent: Intent
+    private lateinit var returnIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +31,7 @@ class CriteriaPickerActivity : AppCompatActivity() {
         done()
     }
 
-    fun done() {
+    private fun done() {
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }

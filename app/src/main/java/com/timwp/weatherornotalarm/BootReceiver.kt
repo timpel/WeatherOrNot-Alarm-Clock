@@ -10,14 +10,14 @@ import java.util.*
 
 class BootReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent!!.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if (intent!!.action == Intent.ACTION_BOOT_COMPLETED) {
             if (context != null) resetAlarms(context)
             else {
                 Toast.makeText(context, "context null", Toast.LENGTH_LONG).show()
             }
         }
     }
-    fun resetAlarms(context: Context) {
+    private fun resetAlarms(context: Context) {
         val files =  context.filesDir.listFiles { dir, filename -> filename != "instant-run" }
         if (files.isNotEmpty()) {
             val gson = Gson()
@@ -52,25 +52,24 @@ class BootReceiver: BroadcastReceiver() {
             }
         }
     }
-    fun updateSettings(oldSettings: PersistentAlarmPairSettings): PersistentAlarmPairSettings {
-        val newSettings = oldSettings
-        if (newSettings.defaultAlarmSettings != null) {
-            newSettings.defaultAlarmSettings.time = updateAlarmTime(newSettings.defaultAlarmSettings.time,
-                    newSettings.defaultAlarmSettings.hour,
-                    newSettings.defaultAlarmSettings.minute)
+    private fun updateSettings(oldSettings: PersistentAlarmPairSettings): PersistentAlarmPairSettings {
+        if (oldSettings.defaultAlarmSettings != null) {
+            oldSettings.defaultAlarmSettings.time = updateAlarmTime(oldSettings.defaultAlarmSettings.time,
+                    oldSettings.defaultAlarmSettings.hour,
+                    oldSettings.defaultAlarmSettings.minute)
         }
-        if (newSettings.weatherAlarmSettings != null) {
-            newSettings.weatherAlarmSettings.time = updateAlarmTime(newSettings.weatherAlarmSettings.time,
-                    newSettings.weatherAlarmSettings.hour,
-                    newSettings.weatherAlarmSettings.minute)
+        if (oldSettings.weatherAlarmSettings != null) {
+            oldSettings.weatherAlarmSettings.time = updateAlarmTime(oldSettings.weatherAlarmSettings.time,
+                    oldSettings.weatherAlarmSettings.hour,
+                    oldSettings.weatherAlarmSettings.minute)
         }
-        return newSettings
+        return oldSettings
     }
-    fun updateAlarmTime(oldTime: Long, hour: Int, minute: Int): Long {
-        Log.i("updateAlarmTime", "Old time: " + oldTime)
+    private fun updateAlarmTime(oldTime: Long, hour: Int, minute: Int): Long {
+        Log.i("updateAlarmTime", "Old time: $oldTime")
         val cal = Calendar.getInstance()
         val currentTime = cal.timeInMillis
-        Log.i("updateAlarmTime", "Current: " + currentTime)
+        Log.i("updateAlarmTime", "Current: $currentTime")
         return if (oldTime > currentTime) {
             Log.i("updateAlarmTime", "Old time still in future, not changing")
             oldTime
@@ -80,14 +79,14 @@ class BootReceiver: BroadcastReceiver() {
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
             var newTime = cal.timeInMillis
-            Log.i("updateAlarmTime", "new time (naive): " + newTime)
+            Log.i("updateAlarmTime", "new time (naive): $newTime")
             if (newTime < currentTime) {
                 cal.add(Calendar.HOUR_OF_DAY, 24)
             } else {
                 Log.i("updateAlarmTime", "new time is in future, we hope")
             }
             newTime = cal.timeInMillis
-            Log.i("updateAlarmTime", "New time: " + newTime)
+            Log.i("updateAlarmTime", "New time: $newTime")
             newTime
 
         }

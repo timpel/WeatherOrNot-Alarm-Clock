@@ -24,7 +24,7 @@ class AlarmPairManager private constructor(context: Context) {
         return alarmPairMap[id]
     }
 
-    fun numberOfAlarmPairs(): Int {
+    private fun numberOfAlarmPairs(): Int {
         return alarmPairMap.size
     }
 

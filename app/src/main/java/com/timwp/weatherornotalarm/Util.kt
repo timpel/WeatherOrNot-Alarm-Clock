@@ -1,16 +1,14 @@
 package com.timwp.weatherornotalarm
 
 import android.content.Context
-import android.content.res.Resources
 import android.location.Location
 import android.location.LocationManager
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.view.View
 import java.util.*
 import kotlin.collections.ArrayList
 
-class util {
+class Util {
     companion object {
         private const val KM_PER_MILE = 0.621371.toFloat()
 
@@ -23,7 +21,7 @@ class util {
             val minuteString = if (minute < 10) "0$minute" else "$minute"
             val am_pm = if (cal.get(Calendar.AM_PM) == 1) "PM" else "AM"
             val timeString = "$hourString:$minuteString $am_pm"
-            val spannableString: SpannableString = SpannableString(timeString)
+            val spannableString = SpannableString(timeString)
             spannableString.setSpan(RelativeSizeSpan(1.25f), 0, spannableString.length - 3, 0)
             return spannableString
         }
@@ -31,17 +29,6 @@ class util {
             val am_pm: String = if (hour >= 12) "PM" else "AM"
             val formattedHour = if (hour % 12 == 0) 12 else hour % 12
             return formattedHour.toString() + ":" + (if (minute < 10) "0" else "") + minute.toString() + " " + am_pm
-        }
-        fun timeObject(timeString: String): TimeObject {
-            val splitString = timeString.split(":", " ")
-            val hour = splitString[0].toInt()
-            val minute = splitString[1].toInt()
-            val formattedHour = if (splitString[2] == "AM") {
-                hour % 12
-            } else {
-                if (hour == 12) 12 else hour + 12
-            }
-            return TimeObject(formattedHour, minute)
         }
         fun toDayArray(boolArr: BooleanArray): Array<String> {
             val daysOfTheWeek = arrayOf("SU",
@@ -57,7 +44,7 @@ class util {
             }
             return dayList.toTypedArray()
         }
-        fun setCalendar(time: util.Companion.TimeObject): Calendar {
+        fun setCalendar(time: Util.Companion.TimeObject): Calendar {
             val alarmCalendar = Calendar.getInstance()
             alarmCalendar.set(Calendar.HOUR_OF_DAY, time.hour)
             alarmCalendar.set(Calendar.MINUTE, time.minute)

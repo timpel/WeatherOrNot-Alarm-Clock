@@ -10,11 +10,11 @@ import android.widget.TimePicker
 
 class SetSingleAlarmActivity : AppCompatActivity() {
 
-    lateinit var setAlarmButton: Button
-    lateinit var noAlarmButton: Button
-    lateinit var alarmTimePicker: TimePicker
-    var alarmType: Int = -1
-    var currentlyPicked: Boolean = false
+    private lateinit var setAlarmButton: Button
+    private lateinit var noAlarmButton: Button
+    private lateinit var alarmTimePicker: TimePicker
+    private var alarmType: Int = -1
+    private var currentlyPicked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class SetSingleAlarmActivity : AppCompatActivity() {
         }
     }
 
-    fun initializePicker() {
+    private fun initializePicker() {
         if (currentlyPicked) {
             alarmTimePicker.hour = intent.getIntExtra("HOUR", -1)
             alarmTimePicker.minute = intent.getIntExtra("MINUTE", -1)

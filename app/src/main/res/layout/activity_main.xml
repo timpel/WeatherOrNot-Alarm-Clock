@@ -22,7 +22,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
         android:onClick="addAlarm"
-        android:text="New Alarm"
+        android:text="@string/new_alarm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

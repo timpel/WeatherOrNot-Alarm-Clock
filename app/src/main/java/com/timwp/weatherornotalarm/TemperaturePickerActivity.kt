@@ -11,13 +11,13 @@ import android.widget.NumberPicker
 
 class TemperaturePickerActivity : AppCompatActivity() {
 
-    lateinit var TEMP_OPERATIONS: Array<String>
-    var TEMP_MIN: Int = Int.MIN_VALUE
-    var TEMP_MAX: Int = Int.MAX_VALUE
-    lateinit var TEMP_UNITS: Array<String>
-    var TEMP_STEP: Int = 5
+    private lateinit var TEMP_OPERATIONS: Array<String>
+    private var TEMP_MIN: Int = Int.MIN_VALUE
+    private var TEMP_MAX: Int = Int.MAX_VALUE
+    private lateinit var TEMP_UNITS: Array<String>
+    private var TEMP_STEP: Int = 5
 
-    lateinit var tempPickers: ConstraintLayout
+    private lateinit var tempPickers: ConstraintLayout
     lateinit var tempOpPicker: NumberPicker
     lateinit var tempNumPicker: NumberPicker
     lateinit var tempUnitPicker: NumberPicker

@@ -15,7 +15,7 @@ import android.widget.CheckedTextView
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import com.timwp.weatherornotalarm.util.Companion.timeString
+import com.timwp.weatherornotalarm.Util.Companion.timeString
 import java.util.*
 import kotlin.math.abs
 
@@ -31,8 +31,8 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     private lateinit var weatherCriteriaIcon: ImageView
     private lateinit var weatherCriteriaLabel: TextView
     private lateinit var weatherCriteriaBar: ConstraintLayout
-    private var defaultTime: util.Companion.TimeObject? = null
-    private var weatherTime: util.Companion.TimeObject? = null
+    private var defaultTime: Util.Companion.TimeObject? = null
+    private var weatherTime: Util.Companion.TimeObject? = null
     private lateinit var ringtonePath: Uri
     private var defaultColor: Int = 0
 
@@ -65,8 +65,8 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         if (currentlySet) {
             val hour = intent.getIntExtra("DEFAULT_HOUR", -1)
             val minute = intent.getIntExtra("DEFAULT_MINUTE", -1)
-            defaultTime = util.Companion.TimeObject(hour, minute)
-            defaultAlarmLabel.text = util.timeString(hour, minute)
+            defaultTime = Util.Companion.TimeObject(hour, minute)
+            defaultAlarmLabel.text = Util.timeString(hour, minute)
         } else {
             defaultAlarmLabel.text = getString(R.string.none)
             defaultTime = null
@@ -82,8 +82,8 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         if (currentlySet) {
             val hour = intent.getIntExtra("WEATHER_HOUR", -1)
             val minute = intent.getIntExtra("WEATHER_MINUTE", -1)
-            weatherTime = util.Companion.TimeObject(hour, minute)
-            weatherAlarmLabel.text = util.timeString(hour, minute)
+            weatherTime = Util.Companion.TimeObject(hour, minute)
+            weatherAlarmLabel.text = Util.timeString(hour, minute)
         } else {
             weatherAlarmLabel.text = getString(R.string.none)
             weatherTime = null
@@ -276,7 +276,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         val defaultAlarm = configureDefaultAlarm(alarmPairID)
         val weatherAlarm = configureWeatherAlarm(alarmPairID)
 
-        if (weatherAlarm != null && weatherAlarm.getWeatherCriteriaAsStringArray().contentEquals(Array<String>(8, { it -> ""}))) {
+        if (weatherAlarm != null && weatherAlarm.getWeatherCriteriaAsStringArray().contentEquals(Array(8, { it -> ""}))) {
             val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
             alertBuilder.setMessage("Choose WeatherAlarm Criteria, or use only the Default Alarm if you want this alarm to ring regardless of weather.")
                     .setPositiveButton("OK", { dialogInterface, i ->
@@ -321,7 +321,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
             return null
         }
         else {
-            val calendar = util.setCalendar(defaultTime!!)
+            val calendar = Util.setCalendar(defaultTime!!)
             val alarmSettings = IAlarmSettings(
                     Alarm.ALARM_TYPE_DEFAULT,
                     abs((Calendar.getInstance().timeInMillis).toInt()),
@@ -346,7 +346,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
         }
         else {
             val id = abs((Calendar.getInstance().timeInMillis).toInt()) + 1
-            val calendar = util.setCalendar(weatherTime!!)
+            val calendar = Util.setCalendar(weatherTime!!)
             val alarmSettings = IAlarmSettings(
                     Alarm.ALARM_TYPE_WEATHER,
                     id,
@@ -385,7 +385,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                     when (data.getIntExtra("ALARM_TYPE", -1)) {
                         Alarm.ALARM_TYPE_DEFAULT -> {
                             if (data.getBooleanExtra("ALARM_SET", false)) {
-                                defaultTime = util.Companion.TimeObject(data.getIntExtra("HOUR", -1),
+                                defaultTime = Util.Companion.TimeObject(data.getIntExtra("HOUR", -1),
                                         data.getIntExtra("MINUTE", -1))
                                 defaultAlarmLabel.text = timeString(defaultTime!!.hour, defaultTime!!.minute)
                             } else {
@@ -395,7 +395,7 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                         }
                         Alarm.ALARM_TYPE_WEATHER -> {
                             if (data.getBooleanExtra("ALARM_SET", false)) {
-                                weatherTime = util.Companion.TimeObject(data.getIntExtra("HOUR", -1),
+                                weatherTime = Util.Companion.TimeObject(data.getIntExtra("HOUR", -1),
                                         data.getIntExtra("MINUTE", -1))
                                 weatherAlarmLabel.text = timeString(weatherTime!!.hour, weatherTime!!.minute)
                             } else {

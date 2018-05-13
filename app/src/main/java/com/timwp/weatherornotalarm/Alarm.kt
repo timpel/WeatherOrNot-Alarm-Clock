@@ -13,31 +13,26 @@ import kotlin.math.abs
 
 class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alarm> {
     companion object {
-        val ALARM_TYPE_DEFAULT = 0
-        val ALARM_TYPE_WEATHER = 1
+        const val ALARM_TYPE_DEFAULT = 0
+        const val ALARM_TYPE_WEATHER = 1
     }
 
     override fun compareTo(other: Alarm): Int {
         return (if (settings.time > other.getAlarmTime()) 1 else -1)
     }
 
-    private val SNOOZE_TIME = 10000 //* 60 * 10
+    private val SNOOZE_TIME = 10000 * 60 * 10
     private var context = con
     private var ringing = false
     private val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
-    lateinit var pendingAlarmIntent: PendingIntent
-    private var active = true
+    private lateinit var pendingAlarmIntent: PendingIntent
     private val ringtoneURI = Uri.parse(settings.ringtoneURIString)
-    lateinit var ringtone: Ringtone
+    private lateinit var ringtone: Ringtone
     private var isSnoozing = false
 
     fun getSettings(): IAlarmSettings {
         return settings
-    }
-
-    fun getID(): Int {
-        return settings.id
     }
 
     fun getAlarmTime(): Long {
@@ -66,20 +61,6 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
                 criteria.windUnit,
                 criteria.windDirection)
     }
-/*
-    fun activate() {
-        active = true
-        persist()
-    }
-
-    fun deactivate() {
-        active = false
-        persist()
-    }
-*/
-    fun isActive(): Boolean {
-        return active
-    }
 
     fun set() {
         alarmIntent.action = "com.timwp.alarmtrigger"
@@ -92,31 +73,13 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         testCalendar.timeInMillis = settings.time
         Log.e("Alarm set()", "Alarm set for " + testCalendar.get(Calendar.HOUR_OF_DAY) + ":" + testCalendar.get(Calendar.MINUTE)
                 + ", " + testCalendar.get(Calendar.DAY_OF_YEAR))
-        //localAlarmManager.addAlarm(this)
-        //persist()
     }
-    /*
-    fun edit(newSettings: IAlarmSettings, con: Context) {
-        cancel()
-        this.settings.time = settings.time
-        loc = settings.location
-        checkAgain = settings.keepChecking === "true"
-        set()
-    }
-    */
     fun cancel() {
         alarmIntent.action = "com.timwp.alarmtrigger"
         pendingAlarmIntent = PendingIntent.getBroadcast(context, settings.id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         systemAlarmManager.cancel(pendingAlarmIntent)
         //depersist()
     }
-    /*
-    fun trigger() {
-        if (matchesWeatherCriteria()) ring()
-        else if (settings.checkAgain) snooze()
-        else cancel()
-    }
-    */
     fun snooze() {
         ringing = false
         alarmIntent.action = "com.timwp.alarmtrigger"
@@ -202,7 +165,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
             }
             criteria.temp != "" -> {
                 val criteriaTempInFahrenheit = if (criteria.tempUnit == "F") criteria.temp.toFloat()
-                else util.celsiusToFahrenheit(criteria.temp.toInt())
+                else Util.celsiusToFahrenheit(criteria.temp.toInt())
                 tempInFahrenheit == null ||
                 when (criteria.tempOperator) {
                     context.getString(R.string.temp_above) -> {
@@ -219,7 +182,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
             }
             criteria.windSpeed != "" -> {
                 val criteriaWindSpeedInMph = if (criteria.windUnit == context.getString(R.string.mph)) criteria.windSpeed.toFloat()
-                else util.kmToMph(criteria.windSpeed.toInt())
+                else Util.kmToMph(criteria.windSpeed.toInt())
                 when (criteria.windOperator) {
                     context.getString(R.string.wind_above) -> {
                         windSpeedInMph != null
@@ -245,7 +208,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
 
     }
     private fun windDirectionMatch(currentWindBearing: Float?, criteriaWindDirection: String): Boolean {
-        return if (criteriaWindDirection == "" || currentWindBearing == null) true
+        return if (criteriaWindDirection == "" || criteriaWindDirection == "-" || currentWindBearing == null) true
         else {
             val criteriaBearing = toBearing(criteriaWindDirection)
             (abs(criteriaBearing - currentWindBearing) < 45
@@ -257,18 +220,4 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
         val directionIndex = dirArray.indexOf(direction)
         return directionIndex.toFloat() * 360/8
     }
-/*
-    private fun persist() {
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val fileObject = PersistentAlarmSettings(settings, active)
-        val fileString: String = gson.toJson(fileObject, PersistentAlarmSettings::class.java)
-
-        val path = context.filesDir
-        File(path, settings.id.toString()).writeText(fileString)
-    }
-
-    private fun depersist() {
-        context.deleteFile(settings.id.toString())
-    }
-    */
 }

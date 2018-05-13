@@ -2,7 +2,6 @@ package com.timwp.weatherornotalarm
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -28,7 +27,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         val weatherAlarm = thisAlarmPair.getWeatherAlarm()
 
         if (defaultAlarm != null) {
-            holder.defaultAlarmLabel.text = util.timeString(defaultAlarm.getAlarmTime())
+            holder.defaultAlarmLabel.text = Util.timeString(defaultAlarm.getAlarmTime())
             holder.defaultAlarmLabel.visibility = View.VISIBLE
             holder.noDefaultLabel.visibility = View.INVISIBLE
         } else {
@@ -38,7 +37,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         }
 
         if (weatherAlarm != null) {
-            holder.weatherAlarmLabel.text = util.timeString(weatherAlarm.getAlarmTime())
+            holder.weatherAlarmLabel.text = Util.timeString(weatherAlarm.getAlarmTime())
             holder.weatherAlarmLabel.visibility = View.VISIBLE
             holder.noWeatherLabel.visibility = View.INVISIBLE
 
@@ -88,7 +87,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         }
 
         val nonNullAlarm: Alarm = thisAlarmPair.getNonNullAlarm()
-        val dayArray = util.toDayArray(nonNullAlarm.getSettings().repeat)
+        val dayArray = Util.toDayArray(nonNullAlarm.getSettings().repeat)
         val dayString = if (dayArray.isNotEmpty()) dayArray.joinToString(", ") else "Non-repeating"
         holder.repeatLabel.text = dayString
 
@@ -124,7 +123,7 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
         }
     }
 
-    fun setColors(holder: ViewHolder, isActive: Boolean) {
+    private fun setColors(holder: ViewHolder, isActive: Boolean) {
         if (isActive) {
             holder.allLabels.forEach { it.setTextColor(holder.defaultColor) }
             holder.weatherCriteriaIcon.clearColorFilter()

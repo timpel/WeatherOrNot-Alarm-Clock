@@ -1,10 +1,5 @@
 package com.timwp.weatherornotalarm
 
-import android.content.Context
-import android.media.Ringtone
-import android.net.Uri
-import java.util.*
-
 data class IAlarmSettings(
     var type: Int,
     var id: Int,

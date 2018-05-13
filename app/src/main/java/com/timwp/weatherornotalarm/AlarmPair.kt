@@ -81,7 +81,7 @@ class AlarmPair(private val id: Int, private val defaultAlarm: Alarm?, private v
         File(path, id.toString()).writeText(fileString)
     }
 
-    fun depersist() {
+    private fun depersist() {
         context.deleteFile(id.toString())
     }
 }

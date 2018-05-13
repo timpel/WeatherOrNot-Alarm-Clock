@@ -13,7 +13,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="No WeatherAlarm"
+        android:text="@string/no_weatheralarm"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/weather_time_label"
         app:layout_constraintStart_toEndOf="@+id/activation_switch"
@@ -26,7 +26,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
-        android:text="Default"
+        android:text="@string/default_title"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/default_time_label"
         app:layout_constraintStart_toEndOf="@+id/default_time_label" />
@@ -37,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="7:30 AM"
         android:textSize="24sp"
+        android:text="@string/no_default"
         app:layout_constraintBottom_toTopOf="@+id/weather_time_label"
         app:layout_constraintStart_toStartOf="@+id/no_weather_label"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="7:00 AM"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/activation_switch"
         app:layout_constraintStart_toEndOf="@+id/activation_switch"
@@ -70,7 +69,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/wind_icon" />
+            app:srcCompat="@drawable/wind_icon"
+            android:contentDescription="@string/weather_criteria_icon" />
 
         <TextView
             android:id="@+id/weather_criteria_label"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginStart="4dp"
-            android:text="Cloudy"
+            android:text="@string/cloudy"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/weather_criteria_icon" />
     </android.support.constraint.ConstraintLayout>
@@ -96,7 +96,6 @@
         android:id="@+id/repeat_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="M, TU, W, TH"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/no_weather_label"
@@ -121,14 +120,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings_white_24px" />
+        app:srcCompat="@drawable/ic_settings_white_24px"
+        android:contentDescription="@string/alarm_settings" />
 
     <TextView
         android:id="@+id/no_default_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="No Default Alarm"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/default_time_label"
         app:layout_constraintStart_toEndOf="@+id/activation_switch"

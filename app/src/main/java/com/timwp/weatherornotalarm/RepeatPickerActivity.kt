@@ -17,7 +17,7 @@ class RepeatPickerActivity : AppCompatActivity() {
 
     lateinit var boxLayout: ConstraintLayout
     lateinit var repeatRadios: RadioGroup
-    lateinit var boxArray: Array<CheckBox>
+    private lateinit var boxArray: Array<CheckBox>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,15 +69,15 @@ class RepeatPickerActivity : AppCompatActivity() {
         repeatRadios.setOnCheckedChangeListener({ _, checkedId ->
             when (checkedId) {
                 R.id.norepeat_radio -> {
-                    Log.e("radioGroup onCheckedChangedListener", "No repeats checked")
+                    Log.e("radios onCheckedChanged", "No repeats checked")
                     hidePickers()
                 }
                 R.id.repeat_radio -> {
-                    Log.e("radioGroup onCheckedChangedListener", "Repeats checked")
+                    Log.e("radios onCheckedChanged", "Repeats checked")
                     revealPickers()
                 }
                 else -> {
-                    Log.e("radioGroup onCheckedChangedListener", "checkedId not recognized")
+                    Log.e("radios onCheckedChanged", "checkedId not recognized")
                 }
             }
         })

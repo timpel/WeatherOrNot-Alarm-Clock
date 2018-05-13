@@ -11,14 +11,14 @@ import android.widget.NumberPicker
 
 class WindPickerActivity : AppCompatActivity() {
 
-    lateinit var WIND_OPERATIONS: Array<String>
-    var WIND_MIN: Int = Int.MIN_VALUE
-    var WIND_MAX: Int = Int.MAX_VALUE
-    lateinit var WIND_UNITS: Array<String>
-    lateinit var WIND_DIRECTIONS: Array<String>
-    var WIND_STEP: Int = 5
+    private lateinit var WIND_OPERATIONS: Array<String>
+    private var WIND_MIN: Int = Int.MIN_VALUE
+    private var WIND_MAX: Int = Int.MAX_VALUE
+    private lateinit var WIND_UNITS: Array<String>
+    private lateinit var WIND_DIRECTIONS: Array<String>
+    private var WIND_STEP: Int = 5
 
-    lateinit var windPickers: ConstraintLayout
+    private lateinit var windPickers: ConstraintLayout
     lateinit var windOpPicker: NumberPicker
     lateinit var windNumPicker: NumberPicker
     lateinit var windUnitPicker: NumberPicker
