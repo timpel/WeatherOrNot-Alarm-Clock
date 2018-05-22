@@ -134,7 +134,7 @@ class Alarm(private val settings: IAlarmSettings, con: Context): Comparable<Alar
     fun matchesCriteria(weatherResponse: WeatherResponse): Boolean {
         val currentWeather = weatherResponse.currently
 
-        val clear = (currentWeather.cloudCover != null && currentWeather.cloudCover < 0.2)
+        val clear = (currentWeather.cloudCover != null && currentWeather.cloudCover < 0.3)
                 || currentWeather.icon == "clear-day"
                 || currentWeather.icon == "clear-night"
         val cloudy = (currentWeather.cloudCover != null && currentWeather.cloudCover > 0.6)

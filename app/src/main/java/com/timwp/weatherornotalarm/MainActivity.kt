@@ -5,12 +5,22 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import com.amazonaws.mobile.client.AWSStartupResult
+import com.amazonaws.mobile.client.AWSStartupHandler
+import com.amazonaws.mobile.client.AWSMobileClient
+
+
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        AWSMobileClient.getInstance().initialize(this) {
+            Log.d("WeatherOrNot", "AWSMobileClient instantiated")
+        }.execute()
+
         val launchIntent = Intent(applicationContext, AlarmListActivity::class.java)
         startActivity(launchIntent)
     }

@@ -28,6 +28,25 @@ class AlarmListActivity : AppCompatActivity() {
 
     private fun checkPermissions() {
         requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+
+    }
+
+    fun addAlarmPair(view: View) {
+        val launchIntent = Intent(applicationContext, SetMultiAlarmActivity::class.java)
+        launchIntent.putExtra("DEFAULT_CURRENTLY_SET", false)
+        launchIntent.putExtra("WEATHER_CURRENTLY_SET", false)
+        launchIntent.putExtra("CURRENT_REPEATS", BooleanArray(7))
+        launchIntent.putExtra("CURRENT_WEATHER_CRITERIA", Array(8, { _ -> "" }))
+        startActivity(launchIntent)
+    }
+
+    fun openAboutPage(view: View) {
+        val launchIntent = Intent(applicationContext, AboutPageActivity::class.java)
+        startActivity(launchIntent)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -41,15 +60,5 @@ class AlarmListActivity : AppCompatActivity() {
                     })
             alertBuilder.create().show()
         }
-    }
-
-    fun addAlarmPair(view: View) {
-        val launchIntent = Intent(applicationContext, SetMultiAlarmActivity::class.java)
-        launchIntent.putExtra("DEFAULT_CURRENTLY_SET", false)
-        launchIntent.putExtra("WEATHER_CURRENTLY_SET", false)
-        launchIntent.putExtra("CURRENT_REPEATS", BooleanArray(7))
-        launchIntent.putExtra("CURRENT_WEATHER_CRITERIA", Array(8, { _ -> "" }))
-        startActivity(launchIntent)
-        Log.e("Logging", "in SetMultiAlarm")
     }
 }

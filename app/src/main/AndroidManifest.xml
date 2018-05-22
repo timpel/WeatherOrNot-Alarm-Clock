@@ -3,9 +3,10 @@
     package="com.timwp.weatherornotalarm">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -46,41 +47,49 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".RingSliderActivity"
-            android:screenOrientation="portrait"
-            android:clearTaskOnLaunch="true" />
-        <activity android:name=".ConditionPickerActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+            android:clearTaskOnLaunch="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ConditionPickerActivity"
+            android:parentActivityName=".SetMultiAlarmActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TemperaturePickerActivity"
+            android:parentActivityName=".SetMultiAlarmActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Dialog.NoActionBar"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+            android:theme="@style/Theme.Dialog.NoActionBar" />
         <activity
             android:name=".WindPickerActivity"
+            android:parentActivityName=".SetMultiAlarmActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Dialog.NoActionBar"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
-        <activity android:name=".RepeatPickerActivity"
+            android:theme="@style/Theme.Dialog.NoActionBar" />
+        <activity
+            android:name=".RepeatPickerActivity"
+            android:parentActivityName=".SetMultiAlarmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetMultiAlarmActivity"
+            android:parentActivityName=".AlarmListActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
-        <activity android:name=".SetMultiAlarmActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
-            android:parentActivityName="com.timwp.weatherornotalarm.AlarmListActivity"/>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".SetSingleAlarmActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName=".SetMultiAlarmActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+            android:theme="@style/Theme.Dialog.NoActionBar" />
         <activity
             android:name=".CriteriaPickerActivity"
-            android:theme="@style/Theme.Dialog.NoActionBar"
+            android:parentActivityName=".SetMultiAlarmActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.timwp.weatherornotalarm.SetMultiAlarmActivity"/>
+            android:theme="@style/Theme.Dialog.NoActionBar" />
         <activity android:name=".AlarmListActivity" />
+        <activity android:name=".AboutPageActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".AlarmListActivity"
+            android:theme="@style/Theme.AppCompat" />
     </application>
 
 </manifest>

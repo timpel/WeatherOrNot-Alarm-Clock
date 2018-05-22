@@ -145,9 +145,9 @@ class SetMultiAlarmActivity : AppCompatActivity() {
                 criteriaArray[4],
                 criteriaArray[5],
                 criteriaArray[6],
-                criteriaArray[7])
+                criteriaArray[7].replace("-", ""))
         setWeatherCriteriaView()
-        weatherCriteriaLabel.text = criteriaArray.joinToString(" ").replace("-", "").trim()
+        weatherCriteriaLabel.text = criteriaArray.joinToString(" ").trim()
     }
 
     private fun setWeatherCriteriaView() {
@@ -188,10 +188,10 @@ class SetMultiAlarmActivity : AppCompatActivity() {
     fun onClickDayCheckedText(v: View) {
         val checkedText = v as CheckedTextView
         val onlyOneChecked = !boxArray.map {it -> it.isChecked}.contains(true)
-        checkedText.isChecked = !checkedText.isChecked
+        checkedText.toggle()
         when (checkedText.isChecked) {
             true -> {
-                checkedText.setTextColor(Color.WHITE)
+                checkedText.setTextColor(defaultColor)
             }
             else -> {
                 checkedText.setTextColor(Color.DKGRAY)

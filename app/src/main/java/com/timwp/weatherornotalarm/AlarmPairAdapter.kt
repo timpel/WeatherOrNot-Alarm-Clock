@@ -48,8 +48,9 @@ class AlarmPairAdapter(private var alarmPairs: ArrayList<AlarmPair>) : RecyclerV
                     weatherCriteria.temp,
                     if (weatherCriteria.tempUnit != "") '\u00B0' + weatherCriteria.tempUnit else "",
                     weatherCriteria.windOperator,
-                    weatherCriteria.windSpeed, weatherCriteria.windUnit, weatherCriteria.windDirection)
-            val criteriaString = criteriaStringArray.joinToString(" ").replace("-", "").trim()
+                    weatherCriteria.windSpeed, weatherCriteria.windUnit,
+                    weatherCriteria.windDirection.replace("-", ""))
+            val criteriaString = criteriaStringArray.joinToString(" ").trim()
 
             when {
                 weatherCriteria.conditions == "Clear" -> {

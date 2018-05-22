@@ -123,20 +123,25 @@
     <string name="general_conditions">General Conditions</string>
     <string name="default_alarm_time">Default Alarm Time</string>
     <string name="repeat">Repeat</string>
-    <string name="su">SU</string>
-    <string name="m">M</string>
-    <string name="w">W</string>
-    <string name="th">TH</string>
-    <string name="f">F</string>
-    <string name="sa">SA</string>
+    <string name="su"> SU </string>
+    <string name="m"> M </string>
+    <string name="w"> W </string>
+    <string name="th"> TH </string>
+    <string name="f"> F </string>
+    <string name="sa"> SA </string>
     <string name="tone">Tone</string>
     <string name="weatheralarm_time">WeatherAlarm Time</string>
     <string name="weatheralarm_criteria">WeatherAlarm Criteria</string>
     <string name="set">Set</string>
     <string name="stop">Stop</string>
-    <string name="swipe_to_snooze">Swipe to Snooze</string>
+    <string name="swipe_to_snooze">\u003C\u003C  Swipe to Snooze  \u003E\u003E</string>
     <string name="no_weatheralarm">No WeatherAlarm</string>
     <string name="default_title">Default</string>
     <string name="tu">TU</string>
-    <string name="endpt">https://whispering-inlet-50260.herokuapp.com/weatherornot</string>
+    <string name="endpt">http://ec2-52-40-189-126.us-west-2.compute.amazonaws.com/weatherornot</string>
+    <string name="default_alarm_ring_label">Default Alarm</string>
+
+    <string name="dark_sky_credit_url">https://darksky.net/poweredby/</string>
+    <string name="launcher_icon_credit_url">https://www.flaticon.com/authors/dinosoftlabs</string>
+    <string name="weather_icon_credit_url">https://www.flaticon.com/authors/pixel-perfect</string>
 </resources>
